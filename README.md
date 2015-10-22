@@ -1,2 +1,8 @@
-# medical-interchange
-A marketplace for hospitals to list surplus or expired items that they have no use for, and non-profits who have a need.
+##Medical/non-profit donation craigslist
+* US hospitals have tons of surplus equipment they no longer use or need (or they're expired).
+* There are tons of hospitals in 3rd world countries (or poorer parts of the US) that would love to have these things and would pay to have them shipped.
+* Upon successful receipt of the items, we can have the receivers verify it through the site and send a "receipt" for donor tax purposes. There can also be some kind of internal rating mechanic to weed out bad donors.
+* We can verify validity of US non-profits or hospitals by their publicly available 501-c3 info.
+* People who have can basically say they have X items, they work or don't work, and have their contact info. Verified organizations can send a request for items to the donors  and shipment can be worked out between the parties.
+* We have access to a physician who can be an external stakeholder and has various contacts in different organizations that would be eligible. 
+
