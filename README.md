@@ -1,4 +1,5 @@
 ##Medical/non-profit donation craigslist
+Documentation base: https://drive.google.com/open?id=0B9P89-HBe68zVjB1UURLWVpxN0k
 * US hospitals have tons of surplus equipment they no longer use or need (or they're expired).
 * There are tons of hospitals in 3rd world countries (or poorer parts of the US) that would love to have these things and would pay to have them shipped.
 * Upon successful receipt of the items, we can have the receivers verify it through the site and send a "receipt" for donor tax purposes. There can also be some kind of internal rating mechanic to weed out bad donors.
