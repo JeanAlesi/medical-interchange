@@ -15,7 +15,7 @@
     "mocha": "1.13.x"
   },
   "scripts": {
-    "start": "nodemon -w models -w config -w routes app.js",
+    "start": "node app.js",
     "test": "mocha test/item_model.js"
   },
   "repository": "",
