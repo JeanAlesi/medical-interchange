@@ -1,0 +1,29 @@
+extends ../layout
+include ../mixins/form-helpers
+
+block content
+  form#item-form(action="/items/" + item._id + "/edit", method="POST", role="form")
+    fieldset
+      legend Edit Item
+
+      .form-group
+        mixin label("title", "Title")
+        mixin text("title", item.title)
+        mixin errorMessage(item, 'title')
+      .form-group
+        mixin label("description", "Description")
+        mixin text("description", item.description)
+        mixin errorMessage(item, 'description')
+      .form-group
+        mixin label("category", "Category")
+        mixin text("category", item.category)
+        mixin errorMessage(item, 'category')
+      .form-group
+        mixin label("condition", "Condition")
+        mixin text("condition", item.condition)
+        mixin errorMessage(item, 'condition')
+
+    .form-actions
+      a.btn.btn-warning(href="/items") Back
+      | 
+      input.btn.btn-primary(type="submit", value="Save")

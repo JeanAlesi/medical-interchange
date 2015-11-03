@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  h2.display-data Item Detail
+            
+  table.table.table-bordered
+    tr
+      th Property
+      th Value
+        tr
+          td Title
+          td= display(item.title)
+        tr
+          td Description
+          td= display(item.description)
+        tr
+          td Category
+          td= display(item.category)
+        tr
+          td Condition
+          td= display(item.condition)
+
+
+  .form-actions
+    a.btn.btn-warning(href="/items") Back
+    | 
+    a.btn.btn-primary(href="/items/" + item._id + "/edit") Edit
+    | 
+    a.btn.btn-danger(href="/items/" + item._id + "/delete") Delete

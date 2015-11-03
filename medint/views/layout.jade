@@ -1,0 +1,26 @@
+doctype 5
+html
+  head
+    title Medical Interchange
+    meta(charset='UTF-8')
+    link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/custom.css')
+    block scripts
+      script(src='/vendor/jquery/js/jquery.min.js')
+      script(src='/vendor/bootstrap/js/bootstrap.min.js')
+  body
+    div.navbar.navbar-inverse.navbar-static-top(role='navigation')
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/items') Medical Interchange
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='#') Your navigation goes here
+    .container
+      block content

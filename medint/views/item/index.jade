@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  h2.display-data All Items
+    a.btn.btn-primary.pull-right(href="/items/create") Create a new Item
+
+  table.table.table-bordered.table-striped
+    tr
+        th Title
+        th Description
+        th Category
+        th Condition
+        th
+
+    each item in items
+      tr
+        td= display(item.title)
+        td= display(item.description)
+        td= display(item.category)
+        td= display(item.condition)
+
+        td
+          a(href="/items/" + item._id + "/detail", title="Detail")
+            i.glyphicon.glyphicon-search
+          | 
+          a(href="/items/" + item._id + "/edit", title="Edit")
+            i.glyphicon.glyphicon-pencil
+          | 
+          a(href="/items/" + item._id + "/delete", title="Delete")
+            i.glyphicon.glyphicon-ban-circle
