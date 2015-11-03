@@ -4,16 +4,18 @@
   "description": "Medical Interchange",
   "main": "app.js",
   "dependencies": {
+    "chai": "^3.4.0",
+    "connect-mongo": "0.3.x",
     "express": "3.4.x",
     "jade": "0.35.x",
-    "mongoose": "3.6.x",
-    "connect-mongo": "0.3.x"
+    "mongoose": "3.6.x"
   },
   "devDependencies": {
     "mocha": "1.13.x"
   },
   "scripts": {
-    "start": "nodemon -w models -w config -w routes app.js"
+    "start": "nodemon -w models -w config -w routes app.js",
+    "test":"mocha test/item_model.js"
   },
   "repository": "",
   "private": true
