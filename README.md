@@ -7,6 +7,14 @@ Documentation base: https://drive.google.com/open?id=0B9P89-HBe68zVjB1UURLWVpxN0
 * People who have can basically say they have X items, they work or don't work, and have their contact info. Verified organizations can send a request for items to the donors  and shipment can be worked out between the parties.
 * We have access to a physician who can be an external stakeholder and has various contacts in different organizations that would be eligible.
 
+##Setup
+###Scaffolding
+Project uses [bumm](https://github.com/saintedlama/bumm) scaffolding.  Initial model used command:
+```bash
+bumm scaffold item title:string:required:true description:string:required:true category:string:required:true condition:string:required:true
+```
+
+
 ##Project Links
 * [Project Documentation](https://drive.google.com/folderview?id=0B9P89-HBe68zVjB1UURLWVpxN0k&usp=drive_web)
 * [A link to our slack channel](https://agilesoftwaredev.slack.com/messages/tonys/)
