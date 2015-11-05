@@ -3,11 +3,12 @@ var mongoose = require("mongoose");
 var Item = require('../models/item')
 
 describe("Item model", function() {
+
   describe("Title must be present", function() {
     it("Add empty title", function() {
       var item = new Item({description:"boo",category:"Machinery",condition:"A"});
       Item.create(item, function (err, createdItem) {
-       // Confirm that that an error does not exist
+       // Confirm that that an error does exist
        expect(err).to.exist;
      });
     });
@@ -17,7 +18,7 @@ describe("Item model", function() {
     it("Add empty description", function() {
       var item = new Item({title:"boo",category:"Machinery",condition:"A"});
       Item.create(item, function (err, createdItem) {
-       // Confirm that that an error does not exist
+       // Confirm that that an error does exist
        expect(err).to.exist;
      });
     });
@@ -27,7 +28,7 @@ describe("Item model", function() {
     it("Add empty category", function() {
       var item = new Item({title:"boo",description:"blah",condition:"A"});
       Item.create(item, function (err, createdItem) {
-       // Confirm that that an error does not exist
+       // Confirm that that an error does exist
        expect(err).to.exist;
      });
     });
@@ -37,7 +38,7 @@ describe("Item model", function() {
     it("Add empty condition", function() {
       var item = new Item({title:"boo",description:"blah",category:"Machinery"});
       Item.create(item, function (err, createdItem) {
-       // Confirm that that an error does not exist
+       // Confirm that that an error does exist
        expect(err).to.exist;
      });
     });
