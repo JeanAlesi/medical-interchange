@@ -1,0 +1,6 @@
+Git clone in Windows environments fails with a 'cannot create file ... filename too long' error.
+This is because Windows has a limitation of 260 characters for a filename.
+To circumvent this issue run the following command in your GitBash (or any terminal client):
+
+git config --system core.longpaths true
+
