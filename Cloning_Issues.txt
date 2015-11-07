@@ -4,3 +4,4 @@ To circumvent this issue run the following command in your GitBash (or any termi
 
 git config --system core.longpaths true
 
+
