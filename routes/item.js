@@ -1,4 +1,5 @@
 var Item = require('../models/item'),
+    fs = require("fs"),
     mapper = require('../lib/model-mapper');
 
 module.exports = function(app) {
@@ -13,7 +14,7 @@ module.exports = function(app) {
             }
         });
     });
-    
+
     app.get('/items', function(req, res) {
         Item.find({}, function(err, items) {
             res.render('item/index', { items : items });
@@ -24,7 +25,7 @@ module.exports = function(app) {
         res.render('item/create', { item : new Item() });
     });
 
-    app.post('/items/create', function(req, res) { 
+    app.post('/items/create', function(req, res) {
         var item = new Item(req.body);
 
         item.save(function(err) {
@@ -51,6 +52,16 @@ module.exports = function(app) {
             } else {
                 res.redirect('/items');
             }
+        });
+    });
+
+    app.post('/items/:itemId/uploadimage',function(req,res) {
+        fs.readFile(req.files.displayImage.path, function (err, data) {
+            var itemId = req.params.itemId;
+            var newPath = __dirname + "/../uploads/" + itemId;
+            fs.writeFile(newPath, data, function (err) {
+                res.redirect("back");
+            });
         });
     });
 
