@@ -3,6 +3,12 @@
   "version": "0.0.0",
   "description": "Medical Interchange",
   "main": "app.js",
+  "scripts": {
+    "test": "istanbul cover tape \"test/*-test.js\"",
+    "lint": "eslint index.js",
+    "ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
+    "ci-lint": "eslint -f checkstyle index.js > checkstyle-result.xml"
+  },
   "dependencies": {
     "chai": "^3.4.0",
     "connect-mongo": "0.3.x",
