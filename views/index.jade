@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h2.display-data Routes
+  h2.display-data Medical Interchange Object Types
   - if (!mainRoutes.length)
     p
       | Well done young Padawan! You've created your first app with bumm!
@@ -28,7 +28,7 @@ block content
       | Which creates a model "item" with one property "name" of type string, the route file is placed under "routes/admin/item.js",
       | and the views can be found under "views/admin/item". You can access this route via "/admin/items"...
 
-    h3 Have fun!    
+    h3 Have fun!
 
   ul
     each route in mainRoutes

@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
+app.use(express.multipart());
 
 app.use(express.session({
     secret: config.sessionSecret,
@@ -58,7 +59,7 @@ require('./routes')(app);
 if (require.main === module) {
     http.createServer(app).listen(config.port, config.address, function() {
         console.log("Express server listening on %s:%d in %s mode", config.address, config.port, app.settings.env);
-    });    
+    });
 } else {
     // Export app if invoked by require('./app')
     module.exports = app;
