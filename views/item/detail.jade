@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   h2.display-data Item Detail
-            
+  img(src='/images/' + item._id)
   table.table.table-bordered
     tr
       th Property
@@ -20,10 +20,9 @@ block content
           td Condition
           td= display(item.condition)
 
-
   .form-actions
     a.btn.btn-warning(href="/items") Back
-    | 
+    |
     a.btn.btn-primary(href="/items/" + item._id + "/edit") Edit
-    | 
+    |
     a.btn.btn-danger(href="/items/" + item._id + "/delete") Delete

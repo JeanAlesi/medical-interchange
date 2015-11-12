@@ -58,8 +58,8 @@ module.exports = function(app) {
     app.post('/items/:itemId/uploadimage',function(req,res) {
         fs.readFile(req.files.displayImage.path, function (err, data) {
             var itemId = req.params.itemId;
-            var newPath = __dirname + "/../uploads/" + itemId;
-            fs.writeFile(newPath, data, function (err) {
+            var imageFullPathName = __dirname + "/../public/images/" + itemId;
+            fs.writeFile(imageFullPathName, data, function (err) {
                 res.redirect("back");
             });
         });
@@ -74,9 +74,55 @@ module.exports = function(app) {
     });
 
     app.post('/items/:itemId/delete', function(req, res) {
-        Item.remove({ _id : req.params.itemId }, function(err) {
-            res.redirect('/items');
-        });
+        try
+        {
+            // check if this item has an uploaded image file
+            var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+
+            // get the stats for the image file
+            fs.lstat(imageFullPathName, function(err, stats)
+                     {
+                         if (err)
+                         {
+                             console.error(err.message);
+                             consile.error(err.stack);
+                         }
+                         else
+                         {
+                             // if an image exists
+                             if (stats.isFile())
+                             {
+                                 // delete the image
+                                 fs.unlink(imageFullPathName, function(err)
+                                           {
+                                               if (err)
+                                               {
+                                                   console.error(err.message);
+                                                   consile.error(err.stack);
+                                               }
+                                           });
+                             }
+                         }
+                     });
+
+            // remove the item from the database
+            Item.remove({ _id : req.params.itemId }, function(err) {
+                if (err)
+                {
+                    console.error(err.message);
+                    consile.error(err.stack);
+                }
+                else
+                {
+                    res.redirect('/items');
+                }
+            });
+        }
+        catch (err)
+        {
+            console.error(err.message);
+            console.error(err.stack);
+        }
     });
 }
 
