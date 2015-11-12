@@ -1,11 +1,22 @@
-/**
- * Created by arleena.faith on 11/9/2015.
- */
-var test = require('tape')
-var summer = require('../')
+var chai = require('chai');
+var chaiHttp = require('chai-http');
+var server = require('../app');
+var should = chai.should();
 
-test('summer', function (t) {
-    var winter = summer(-40)
-    t.equal(winter(40), 0, 'should be equal')
-    t.end()
-})
+chai.use(chaiHttp);
+
+
+describe('Blobs', function() {
+  it('should list ALL blobs GET ALL', function(done){
+  	chai.request(server)
+    .get('/blobs')
+    .end(function(err, res){
+      res.should.have.status(200);
+      done();
+    });
+  });
+  it('should list a SINGLE blob GET');
+  it('should add a SINGLE blob POST');
+  it('should update a SINGLE blob  PUT');
+  it('should delete a SINGLE blob  DELETE');
+});
