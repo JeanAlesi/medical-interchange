@@ -4,7 +4,7 @@ node_js:
 services:
 - mongodb
 script:
-  - istanbul cover _mocha
+  - istanbul cover mocha
 
 deploy:
   provider: heroku
