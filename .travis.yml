@@ -3,6 +3,9 @@ node_js:
 - '0.10'
 services:
 - mongodb
+script:
+  - istanbul cover _mocha
+
 deploy:
   provider: heroku
   api_key:
