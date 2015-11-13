@@ -13,13 +13,13 @@
     "nodemon": "^1.8.1"
   },
   "devDependencies": {
-    "mocha": "1.13.x",
-    "istanbul":"0.4.0"
+    "istanbul": "^0.4.0",
+    "mocha": "1.13.x"
   },
   "scripts": {
     "start": "node app.js",
     "test": "mocha test",
-    "test-cov": "istanbul cover _mocha"
+    "cover": "istanbul cover _mocha"
   },
   "repository": "",
   "private": true
