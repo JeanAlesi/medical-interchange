@@ -85,7 +85,7 @@ module.exports = function(app) {
                          if (err)
                          {
                              console.error(err.message);
-                             consile.error(err.stack);
+                             console.error(err.stack);
                          }
                          else
                          {
@@ -98,7 +98,7 @@ module.exports = function(app) {
                                                if (err)
                                                {
                                                    console.error(err.message);
-                                                   consile.error(err.stack);
+                                                   console.error(err.stack);
                                                }
                                            });
                              }
@@ -110,7 +110,7 @@ module.exports = function(app) {
                 if (err)
                 {
                     console.error(err.message);
-                    consile.error(err.stack);
+                    console.error(err.stack);
                 }
                 else
                 {

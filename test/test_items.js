@@ -18,8 +18,15 @@ describe('Items', function() {
       done();
     });
   });
-  it('should list a SINGLE blob GET');
-  it('should add a SINGLE blob POST');
-  it('should update a SINGLE blob  PUT');
-  it('should delete a SINGLE blob  DELETE');
+    it('should list a SINGLE item GET', function(done){
+        chai.request(server)
+            .post('/items/create')
+            .field('title','XRay Machine')
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('title','Used')
+    });
+    it('should add a SINGLE blob POST');
+    it('should update a SINGLE blob  PUT');
+    it('should delete a SINGLE blob  DELETE');
 });
