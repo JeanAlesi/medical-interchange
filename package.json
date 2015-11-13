@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "mocha test",
+    "test": "mocha test/item_model.js",
     "cover": "istanbul cover _mocha"
   },
   "repository": "",
