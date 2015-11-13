@@ -7,6 +7,6 @@ ssh -o StrictHostKeyChecking=no -i $AWS_KEY ubuntu@starfleet.stormbeard.net "
   cd /home/ubuntu/medical-interchange;
   git fetch;
   git reset --hard origin/master;
-  npm install --production;
+  npm install;
   sudo forever restartall;
 "
