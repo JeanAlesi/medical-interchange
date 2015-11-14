@@ -20,7 +20,12 @@ block content
         mixin errorMessage(item, 'category')
       .form-group
         mixin label("condition", "Condition")
-        mixin text("condition", item.condition)
+        a(href="/conditions/", title="Conditions", target="_blank")
+          i.glyphicon.glyphicon-info-sign
+        br
+        select(id="condition", name="condition")
+            for conditionOption in itemConditions
+                option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption} 
         mixin errorMessage(item, 'condition')
 
     .form-actions

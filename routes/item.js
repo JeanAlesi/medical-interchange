@@ -22,7 +22,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/create', function(req, res) {
-        res.render('item/create', { item : new Item() });
+        res.render('item/create', { item : new Item(), itemConditions : Item.ItemConditions });
     });
 
     app.post('/items/create', function(req, res) {
@@ -31,7 +31,7 @@ module.exports = function(app) {
         item.save(function(err) {
             if (err) {
                 res.render('item/create', {
-                    item : item
+                    item : item, itemConditions : Item.ItemConditions
                 });
             } else {
                 res.redirect('/items');
@@ -40,7 +40,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/edit', function(req, res) {
-        res.render('item/edit');
+        res.render('item/edit', { itemConditions : Item.ItemConditions });
     });
 
     app.post('/items/:itemId/edit', function(req, res) {
@@ -48,7 +48,7 @@ module.exports = function(app) {
 
         res.locals.item.save(function(err) {
             if (err) {
-                res.render('item/edit');
+                res.render('item/edit', { itemConditions : Item.ItemConditions });
             } else {
                 res.redirect('/items');
             }
@@ -124,10 +124,10 @@ module.exports = function(app) {
             console.error(err.stack);
         }
     });
-}
+};
 
 // Used to build the index page. Can be safely removed!
 module.exports.meta = {
     name : 'Item',
     route : '/items'
-}
+};

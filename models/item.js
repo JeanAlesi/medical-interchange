@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ItemConditions = ["New", "New - Expired", "Used - Like new", "Used - Great", "Used - Good", "Used - Fair", "Used - Poor" ];
 
 var Item = new Schema({
     title: { type: String, required: true },
@@ -8,4 +9,6 @@ var Item = new Schema({
     condition: { type: String, required: true }
 });
 
-module.exports = mongoose.model('Item', Item);
+var ItemModel = mongoose.model('Item', Item);
+ItemModel.ItemConditions = ItemConditions;
+module.exports = ItemModel;
