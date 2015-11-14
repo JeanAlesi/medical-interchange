@@ -25,12 +25,12 @@ block content
       .form-group
         mixin label("condition", "Condition")
         a(href="/conditions/", target="_blank", title="Conditions")
-            i.glyphicon.glyphicon-info-sign
+          i.glyphicon.glyphicon-info-sign
         br
         select(id="condition", name="condition")
-            for conditionOption in itemConditions
-                option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}    
-                
+          for conditionOption in itemConditions
+            option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}    
+
         mixin errorMessage(item, 'condition')
 
     .form-actions

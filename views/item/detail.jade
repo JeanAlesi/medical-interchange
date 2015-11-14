@@ -17,7 +17,9 @@ block content
           td Category
           td= display(item.category)
         tr
-          td Condition
+          td Condition 
+            a(href="/conditions/", target="_blank", title="Conditions")
+              i.glyphicon.glyphicon-info-sign
           td= display(item.condition)
 
   .form-actions
