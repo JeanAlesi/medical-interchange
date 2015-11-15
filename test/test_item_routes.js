@@ -78,6 +78,36 @@ describe('Routes', function() {
             });
     });
 
+    // Item description test
+    var description_test_item_id = "";
+    it('Test items description', function(done){
+        var unique_name = 'TEST_ITEM_DESCRIPTION';
+        // Create an item to later view description.
+        chai.request(server)
+            .post('/items/create')
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+            });
+        chai.request(server)
+          .get('/items')
+          .end(function (err, res) {
+            // Split the string into tokens.
+            var separators = ['"', '/'];
+            var tokens = res.text.split(new RegExp(separators.join('|'), 'g'));
+            // Item ID will be the token before any 'detail'.
+            description_test_item_id = tokens[tokens.indexOf('detail')-1];
+          chai.request(server)
+            .get('/items/'.concat(description_test_item_id,'/detail'))
+            .end(function (err, res) {
+              res.should.have.status(200);
+              done();
+          });
+        });
+    });
+
     it.skip('should update a SINGLE blob  PUT');
     it.skip('should delete a SINGLE blob  DELETE');
 });
