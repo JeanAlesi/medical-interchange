@@ -45,7 +45,7 @@ describe("Item model", function() {
     });
 
     // to do: Change this test to accomodate the to be defined condition enumeration
-    describe("Condition must be: A, B, C, D, F", function() {
+    describe("Condition must be a valid condition", function() {
         it("Add conditions", function() {
             var item = new Item({title:"yo",description:"boo",category:"Machinery",condition:"Used - Great"});
             expect(item.condition).to.equal("Used - Great");
