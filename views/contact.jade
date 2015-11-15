@@ -6,3 +6,20 @@ extends layout
 block content
     h1.display-data Contact Us
 
+form.form-actions(method = "POST", action = "/feedback")
+  input(type = "hidden", name = "_method", value = "PUT")
+  br
+  p
+    label.lbl-body Email Address
+    input.text-field(type = "text", name = "email")
+  br
+  p
+    label.lbl-body Subject
+    input.text-field(type = "text", name = "subject")
+  br
+  p
+    label.lbl-body Message
+    textarea.area-field(name = "message")
+  br
+  p
+    input.btn.btn-primary.pull-left(type = "submit", value = "Contact Us")
