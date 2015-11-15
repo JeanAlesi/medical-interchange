@@ -1,3 +1,4 @@
+var utils = require('./utils');
 var expect    = require("chai").expect;
 var mongoose = require("mongoose");
 var Item = require('../models/item')

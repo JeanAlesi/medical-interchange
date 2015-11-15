@@ -1,7 +1,7 @@
 //
 // Test routes.
 //
-
+var utils = require('./utils');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -12,29 +12,27 @@ chai.use(chaiHttp);
 
 describe('Routes', function() {
     // /items GET
-    it('/items GET', function(done){
+    it('/items GET', function(){
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
-                done();
             });
     });
 
     // /items/create GET
-    it('/items/create GET', function(done){
+    it('/items/create GET', function(){
         chai.request(server)
             .get('/items/create')
             .end(function (err, res) {
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
-                done();
             });
     });
 
     // /items/create PUT No Errors
-    it('/items/create POST No Errors', function(done){
+    it('/items/create POST No Errors', function(){
         var unique_name = 'TESTING_PUT_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
@@ -50,12 +48,11 @@ describe('Routes', function() {
             res.should.have.status(200);
             var index = res.text.indexOf(unique_name);
             expect(index).to.not.equal(-1);
-            done();
           });
     });
 
     // /items/create PUT Missing Fields
-    it('/items/create POST Missing Fields', function(done){
+    it('/items/create POST Missing Fields', function(){
         var unique_name = 'TESTING_PUT_MISSING_FIELD';
         var missing_title_err = "Title is required"
         var missing_description_err = "Description is required";
@@ -74,7 +71,6 @@ describe('Routes', function() {
             expect(description_index).to.not.equal(-1);
             var category_index = res.text.indexOf(missing_category_err);
             expect(category_index).to.not.equal(-1);
-            done();
             });
     });
 
