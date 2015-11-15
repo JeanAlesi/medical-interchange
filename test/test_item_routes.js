@@ -10,6 +10,14 @@ var expect = require('chai').expect;
 
 chai.use(chaiHttp);
 
+function getItemIDFromResponse(res) {
+  // Split the string into tokens.
+  var separators = ['"', '/'];
+  var tokens = res.text.split(new RegExp(separators.join('|'), 'g'));
+  // Item ID will be the token before any 'detail'.
+  return tokens[tokens.indexOf('detail')-1];
+}
+
 describe('Routes', function() {
     // /items GET
     it('/items GET', function(done){
@@ -79,35 +87,93 @@ describe('Routes', function() {
     });
 
     // Item description test
-    var description_test_item_id = "";
+    var unique_name = 'TEST_ITEM_DESCRIPTION';
+    // Create an item to get a response.
+    chai.request(server)
+      .post('/items/create')
+      .field('title',unique_name)
+      .field('description','2005 Model Year')
+      .field('category','Hospital Equipment')
+      .field('condition','Used')
+      .end(function(err, res){
+      });
+    // Get item ID.
+    chai.request(server)
+      .get('/items')
+      .end(function (err, res) {
+        desc_item_id = getItemIDFromResponse(res);
+    });
     it('Test items description', function(done){
-        var unique_name = 'TEST_ITEM_DESCRIPTION';
-        // Create an item to later view description.
         chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
-        chai.request(server)
-          .get('/items')
+          .get('/items/'.concat(desc_item_id,'/detail'))
           .end(function (err, res) {
-            // Split the string into tokens.
-            var separators = ['"', '/'];
-            var tokens = res.text.split(new RegExp(separators.join('|'), 'g'));
-            // Item ID will be the token before any 'detail'.
-            description_test_item_id = tokens[tokens.indexOf('detail')-1];
-          chai.request(server)
-            .get('/items/'.concat(description_test_item_id,'/detail'))
-            .end(function (err, res) {
-              res.should.have.status(200);
-              done();
+            res.should.have.status(200);
+            done();
+          });
+    });
+
+    // Item delete GET
+    it('Test items deletion', function(done){
+      var unique_name = 'TEST_ITEM_DELETION';
+      // Create an item to get a response.
+      chai.request(server)
+        .post('/items/create')
+        .field('title',unique_name)
+        .field('description','2005 Model Year')
+        .field('category','Hospital Equipment')
+        .field('condition','Used')
+        .end(function(err, res){
+        });
+      // Get the item ID.
+      chai.request(server)
+        .get('/items')
+        .end(function (err, res) {
+          deletion_item_id = getItemIDFromResponse(res);
+        // Visit the "are you sure?" page.
+        chai.request(server)
+          .get('/items/'.concat(deletion_item_id,'/delete'))
+          .end(function (err, res) {
+            res.should.have.status(200);
+            done();
           });
         });
     });
 
-    it.skip('should update a SINGLE blob  PUT');
-    it.skip('should delete a SINGLE blob  DELETE');
+    // Item delete POST
+    it('Test items deletion', function(done){
+      var unique_name = 'TEST_ITEM_DELETION';
+      // Create an item to get a response.
+      chai.request(server)
+        .post('/items/create')
+        .field('title',unique_name)
+        .field('description','2005 Model Year')
+        .field('category','Hospital Equipment')
+        .field('condition','Used')
+        .end(function(err, res){
+        });
+      // Get the item ID.
+      chai.request(server)
+        .get('/items')
+        .end(function (err, res) {
+          deletion_item_id = getItemIDFromResponse(res);
+          // Delete the item via POST.
+          chai.request(server)
+          .post('/items/'.concat(deletion_item_id,'/delete'))
+          .end(function (err, res) {
+            res.should.have.status(200);
+            // Verify we can't view the item again.
+            chai.request(server)
+            .get('/items/'.concat(deletion_item_id,'details'))
+            .end(function (err, res) {
+              res.should.have.status(404);
+              done();
+            });
+          });
+        });
+    });
+
+    // TODO: Item edit GET
+    // TODO: Item edit POST
+
+    // TODO: Item upload image
 });
