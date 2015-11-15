@@ -27,7 +27,6 @@ describe('Routes', function() {
         chai.request(server)
             .get('/items/create')
             .end(function (err, res) {
-                console.log(res);
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
                 done();
@@ -37,23 +36,24 @@ describe('Routes', function() {
     // wew to do: Check with Tony why this test fails when using done().
     // /items/create PUT No Errors
     it('/items/create POST No Errors', function(done){
+        var unique_name = 'TESTING_PUT_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
-            .field('title','XRay Machine')
+            .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used')
             //.send('submit', 'Create')
             .end(function(err, res){
-                console.log("Processing response in /items/create PUT With No Errors");
-                console.log(res);
-                expect(err).to.be.null;
-                expect(res).to.have.status(200);
-                // wew to do: Check with Tony and Greg on why the
-                // redirect check doesn't work.
-                // expect(res).to.redirect;
-                done();
             });
+        chai.request(server)
+          .get('/items')
+          .end(function (err, res) {
+            res.should.have.status(200);
+            var index = res.text.indexOf(unique_name);
+            expect(index).to.not.equal(-1);
+            done();
+          });
     });
 
     // /items/create PUT With Errors
@@ -66,7 +66,6 @@ describe('Routes', function() {
             .field('category','Hospital Equipment')
             .end(function(err, res) {
                 //console.log("Processing response in /items/create PUT With Errors");
-                //console.log(res);
                 expect(err).to.be.null;
                 expect(res).to.have.status(404);
                 //var error_index = res.text.indexOf("Condition is required");
