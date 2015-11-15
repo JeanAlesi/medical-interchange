@@ -10,6 +10,10 @@ var expect = require('chai').expect;
 
 chai.use(chaiHttp);
 
+// ============================================================================
+// Helper functions
+// ============================================================================
+
 function getItemIDFromResponse(res) {
   // Split the string into tokens.
   var separators = ['"', '/'];
@@ -17,6 +21,10 @@ function getItemIDFromResponse(res) {
   // Item ID will be the token before any 'detail'.
   return tokens[tokens.indexOf('detail')-1];
 }
+
+// ============================================================================
+// Tests
+// ============================================================================
 
 describe('Routes', function() {
     // /items GET
@@ -30,6 +38,8 @@ describe('Routes', function() {
             });
     });
 
+// ============================================================================
+
     // /items/create GET
     it('/items/create GET', function(done){
         chai.request(server)
@@ -40,6 +50,8 @@ describe('Routes', function() {
                 done();
             });
     });
+
+// ============================================================================
 
     // /items/create PUT No Errors
     it('/items/create POST No Errors', function(done){
@@ -61,6 +73,8 @@ describe('Routes', function() {
             done();
           });
     });
+
+// ============================================================================
 
     // /items/create PUT Missing Fields
     it('/items/create POST Missing Fields', function(done){
@@ -85,6 +99,8 @@ describe('Routes', function() {
             done();
             });
     });
+
+// ============================================================================
 
     // Item description test
     var unique_name = 'TEST_ITEM_DESCRIPTION';
@@ -112,8 +128,10 @@ describe('Routes', function() {
           });
     });
 
+// ============================================================================
+
     // Item delete GET
-    it('Test items deletion', function(done){
+    it('Test items deletion GET', function(done){
       var unique_name = 'TEST_ITEM_DELETION';
       // Create an item to get a response.
       chai.request(server)
@@ -139,8 +157,10 @@ describe('Routes', function() {
         });
     });
 
+// ============================================================================
+
     // Item delete POST
-    it('Test items deletion', function(done){
+    it('Test items deletion POST', function(done){
       var unique_name = 'TEST_ITEM_DELETION';
       // Create an item to get a response.
       chai.request(server)
@@ -172,8 +192,75 @@ describe('Routes', function() {
         });
     });
 
-    // TODO: Item edit GET
-    // TODO: Item edit POST
+// ============================================================================
+
+    // Item edit GET
+    it('Test items edit GET', function(done){
+      var unique_name = 'TEST_ITEM_GET';
+      // Create an item to get a response.
+      chai.request(server)
+        .post('/items/create')
+        .field('title',unique_name)
+        .field('description','2005 Model Year')
+        .field('category','Hospital Equipment')
+        .field('condition','Used')
+        .end(function(err, res){
+        });
+      // Get the item ID.
+      chai.request(server)
+        .get('/items')
+        .end(function (err, res) {
+          edit_item_id = getItemIDFromResponse(res);
+        // Visit the "are you sure?" page.
+        chai.request(server)
+          .get('/items/'.concat(edit_item_id,'/edit'))
+          .end(function (err, res) {
+            res.should.have.status(200);
+            done();
+          });
+        });
+    });
+
+// ============================================================================
+
+    // Item edit POST
+    it('Test items edit POST', function(done){
+      var unique_name_before = 'TEST_ITEM_BEFORE';
+      var unique_name_after = 'TEST_ITEM_AFTER';
+      // Create an item to get a response.
+      chai.request(server)
+        .post('/items/create')
+        .field('title',unique_name_before)
+        .field('description','2005 Model Year')
+        .field('category','Hospital Equipment')
+        .field('condition','Used')
+        .end(function(err, res){
+        });
+      // Get the item ID.
+      chai.request(server)
+        .get('/items')
+        .end(function (err, res) {
+          edit_item_id = getItemIDFromResponse(res);
+          // Make changes to the name.
+          chai.request(server)
+          .post('/items/'.concat(edit_item_id, "/edit"))
+          .field('title', unique_name_after)
+          .field('description','2005 Model Year')
+          .field('category','Hospital Equipment')
+          .field('condition','Used')
+          .end(function(err, res) {
+          });
+          // Verify changes.
+          chai.request(server)
+          .get('/items')
+          .end(function (err, res) {
+            res.should.have.status(200);
+            done();
+          });
+        });
+      });
+
+// ============================================================================
 
     // TODO: Item upload image
 });
