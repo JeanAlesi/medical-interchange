@@ -6,16 +6,16 @@ extends layout
 block content
     h1.display-data Current Members / Sign In
 
-form.form-actions(method = "POST", action = "/user")
-  input(type = "hidden", name = "_method", value = "PUT")
-  br
-  p
-    label.lbl-body Username
-    input.text-field(type = "text", name = "username")
-  br
-  p
-    label.lbl-body Password
-    input.text-field(type = "text", name = "password")
-  br
-  p
-    input.btn.btn-primary.pull-left(type = "submit", value = "Log In")
+    form.form-actions(method = "POST", action = "/user")
+        input(type = "hidden", name = "_method", value = "PUT")
+        br
+        p
+            label.lbl-body Username
+            input.text-field(type = "text", name = "username")
+        br
+        p
+            label.lbl-body Password
+            input.text-field(type = "text", name = "password")
+        br
+        p
+            input.btn.btn-primary.pull-left(type = "submit", value = "Log In")
