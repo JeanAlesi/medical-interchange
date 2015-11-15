@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h1.display-data Services Descriptions
+    mixin service(name, description)
+        h4 #{name}
+        p #{description}
+
+    +service("Become a Donor", "Sign up to donate medical products.")
+    .form-actions
+        a.btn.btn-warning(href="/donors") Become a Donor
+    +service("Become a Beneficiary", "Sign up to search for medical supplies and receive donations.")
+    .form-actions
+        a.btn.btn-warning(href="/beneficiaries") Become a Beneficiary
+    br
+    .form-actions
+        a.btn.btn-warning(href="/") Home

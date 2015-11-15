@@ -1,0 +1,9 @@
+extends ../../layout
+
+block content
+    h1.display-data Donors Descriptions
+    mixin donors(name, description)
+        h4 #{name}
+        p #{description}
+    .form-actions
+        a.btn.btn-warning(href="/") Home
