@@ -23,7 +23,7 @@ bumm scaffold item title:string:required:true description:string:required:true c
 #Sprint 1 Delivery
 
 ## Working product link:
-http://starfleet.stormbeard.net/
+http://starfleet.stormbeard.net/items
 
 ##Unit Testing / Code Coverage
 
@@ -55,4 +55,4 @@ All code was written using mobbing and pairing techniques described in
 class.
 
 ## Automated Build System
-We used Travis for our CI Testing framework.  Upon each Git commit/push to our repo, Travis will build a new container to load our code into, and then run Tests and Test Coverage against it.  
+We used Jenkins for our build pipeline.  Whenever a commit is made into Master branch of our project, Jenkins will do a build on its server, and if that passes, it will push that code change to our production AWS server.  
