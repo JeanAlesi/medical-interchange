@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Starfleet Mob Group</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+
+        body input[type=button] {
+            background-color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border: none;
+            min-width: 200px;
+        }
+
+        body input[type=button]:hover {
+            background-color: #666;
+            color: #fff;
+        }
+
+        body {
+            background: #eee;
+            text-align: center;
+            font-family: 'Helvetica';
+            padding: 0;
+        }
+    </style>
+</head>
+<body style="">
+<h3 style="max-width:600px;background: #80aaff;color: #fff;margin:0 auto;padding: 1%;border-radius:5px;border: 1px solid white;">
+    Click on a button to view the coverage for that section</h3>
+<br/>
+
+<div style="margin: 0 auto;background: #428bca;width:600px;padding: 2%;border: 1px solid #666;border-radius:20px;">
+    <a href="/allfiles" target="_blank"><input type="button" value="All Files Coverage Report"></button></a>
+    <br/>
+    <a href="/appcov" target="_blank"><input type="button" value="App Coverage Report"></button></a>
+    <br/>
+    <a href="/routescov" target="_blank"><input type="button" value="Routes Coverage Report"></button></a>
+    <br/>
+    <a href="/modelscov" target="_blank"><input type="button" value="Models Coverage Report"></button></a>
+    <br/>
+    <a href="/configcov" target="_blank"><input type="button" value="Config Coverage Report"></button></a>
+    <br/>
+    <a href="/libcov" target="_blank"><input type="button" value="Lib Coverage Report"></button></a>
+</div>
+
+<script src="prettify.js"></script>
+<script>
+    window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+    };
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>
