@@ -19,4 +19,6 @@ bumm scaffold item title:string:required:true description:string:required:true c
 * [Project Documentation](https://drive.google.com/folderview?id=0B9P89-HBe68zVjB1UURLWVpxN0k&usp=drive_web)
 * [A link to our slack channel](https://agilesoftwaredev.slack.com/messages/tonys/)
 * [Our product backlog](https://trello.com/b/M7WweWDm/final-project-initial-backlog)
-* [Sprint 1 Delivery](https://github.com/ggerrein/medical-interchange/wiki/Sprint-1-Delivery)
+
+## Sprint Deliveries
+* [Sprint 1](https://github.com/ggerrein/medical-interchange/wiki/Sprint-1-Delivery)
