@@ -55,4 +55,4 @@ All code was written using mobbing and pairing techniques described in
 class.
 
 ## Automated Build System
-We used Jenkins for our build pipeline.  Whenever a commit is made into Master branch of our project, Jenkins will do a build on its server, and if that passes, it will push that code change to our production AWS server.  
+We used Jenkins for our build pipeline.  Whenever a commit/push is made into our Master branch of our project Git repository, Jenkins will do a build on its server, and if that passes, it will push that code change to our production AWS server.  
