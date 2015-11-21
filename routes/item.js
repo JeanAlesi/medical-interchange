@@ -45,11 +45,38 @@ module.exports = function(app) {
 
     app.post('/items/:itemId/edit', function(req, res) {
         mapper.map(req.body).to(res.locals.item);
+        var itemId = res.locals.item._id;
+        var pictureUploaded = false;
+
+        // get the existing item out of the database
+        Item.findById(itemId, function(err, item) {
+            if (!err) {
+                // if we uploaded a photo while editing
+                pictureUploaded = item.picturePresent;
+            } else {
+                console.log("Error finding item id: " + itemId);
+            }
+        });
 
         res.locals.item.save(function(err) {
             if (err) {
                 res.render('item/edit', { itemConditions : Item.ItemConditions });
             } else {
+
+                if (pictureUploaded){
+                    Item.findById(itemId, function(err, item) {
+                        if (!err) {
+                            console.log("setting item.picturePresent to true in hacked code");
+                            item.picturePresent = true;
+                            item.save(function(err){
+                                if (err){
+                                    console.error("Save Error!");
+                                }
+                            });
+                        }
+                    });
+                }
+
                 res.redirect('/items');
             }
         });
@@ -60,6 +87,20 @@ module.exports = function(app) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
             fs.writeFile(imageFullPathName, data, function (err) {
+                if (!err){
+                    Item.findById(itemId, function(err, item) {
+                        if (!err) {
+                            console.log("setting item.picturePresent to true");
+                            item.picturePresent = true;
+                            item.save(function(err){
+                                if (err){
+                                    console.error("Save Error!");
+                                }
+                            });
+                        }
+                    });
+                }
+
                 res.redirect("back");
             });
         });

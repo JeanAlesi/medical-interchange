@@ -2,7 +2,11 @@ extends ../layout
 
 block content
   h2.display-data Item Detail
-  img(src='/images/' + item._id)
+  - if (item.picturePresent)
+    img(src='/images/' + item._id)
+    // debug code
+    // p= display(item.picturePresent)
+
   table.table.table-bordered
     tr
       th Property
@@ -17,7 +21,7 @@ block content
           td Category
           td= display(item.category)
         tr
-          td Condition 
+          td Condition
             a(href="/conditions/", target="_blank", title="Conditions")
               i.glyphicon.glyphicon-info-sign
           td= display(item.condition)
