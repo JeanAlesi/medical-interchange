@@ -7,6 +7,7 @@
     "chai": "^3.4.0",
     "chai-http": "1.0.0",
     "connect-mongo": "0.3.x",
+    "console-plus": "^0.1.1",
     "express": "3.4.x",
     "jade": "0.35.x",
     "mongoose": "3.6.x",
@@ -21,6 +22,19 @@
     "test": "mocha test/item_model.js",
     "cover": "istanbul cover _mocha"
   },
-  "repository": "",
-  "private": true
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggerrein/medical-interchange.git"
+  },
+  "private": true,
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ggerrein/medical-interchange/issues"
+  },
+  "homepage": "https://github.com/ggerrein/medical-interchange#readme"
 }
