@@ -6,16 +6,18 @@ block content
 
   table.table.table-bordered.table-striped
     tr
+        th
         th Title
         th Description
         th Category
-        th Condition 
+        th Condition
           a(href="/conditions/", title="Conditions")
             i.glyphicon.glyphicon-info-sign
         th
 
     each item in items
       tr
+        td: img(src='/images/' + item._id width="100" height="50" onerror="this.onerror=null;this.src='/images/slug.png';this.width=50;this.height=50;")
         td= display(item.title)
         td= display(item.description)
         td= display(item.category)
@@ -24,9 +26,9 @@ block content
         td
           a(href="/items/" + item._id + "/detail", title="Detail")
             i.glyphicon.glyphicon-search
-          | 
+          |
           a(href="/items/" + item._id + "/edit", title="Edit")
             i.glyphicon.glyphicon-pencil
-          | 
+          |
           a(href="/items/" + item._id + "/delete", title="Delete")
             i.glyphicon.glyphicon-ban-circle
