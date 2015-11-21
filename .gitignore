@@ -1,5 +1,10 @@
 coverage/*
-public/
+
+public/*
+!public/images
+public/images/*
+!public/images/slug.png
+
 .idea/*
 node_modules/
 *#*
