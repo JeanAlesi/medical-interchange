@@ -335,8 +335,8 @@ describe('Routes', function() {
                         chai.request(server)
                             .post('/items/'.concat(edit_item_id,'/uploadimage'))
                             //.set('Content-Type', 'image')
-                            //.attach('displayImage', 'Z:\raid\Multimedia\My Webs\2013\KettlePizza\images\medium\P1000788.jpg')
-                            .field('displayImage', 'Z:\raid\Multimedia\My Webs\2013\KettlePizza\images\medium\P1000788.jpg')
+                            .attach('displayImage', 'Z:\\raid\\Multimedia\\My Webs\\2013\\KettlePizza\\images\\medium\\P1000788.jpg')
+                            //.field('displayImage', 'Z:\raid\Multimedia\My Webs\2013\KettlePizza\images\medium\P1000788.jpg')
                             .end(function(err, res){
                                 logger.log('/items/'.concat(edit_item_id,'/uploadimage'));
                                 res.should.have.status(200);

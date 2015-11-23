@@ -10,6 +10,7 @@ module.exports = function(app) {
     // The app.param method maps the itemId parameter prior to executing the route.
     app.param('itemId', function(req, res, next, id) {
         logger.log("just inside function");
+        logger.log("id = " + id);
         Item.findById(id, function(err, item) {
             logger.log("Item.findById");
             if (err) {
@@ -79,7 +80,13 @@ module.exports = function(app) {
     // ============================================================================
     // /items/:itemId/uploadimage POST
     app.post('/items/:itemId/uploadimage',function(req,res) {
-        logger.log("req.files.displayImage.path = " + req.files.displayImage.path);
+        logger.error(req);
+        logger.log("typeof(req.files.displayImage.path) = ");
+        if (typeof req.files.displayImage.path === 'undefined')
+        {
+            logger.log("UNDEFINED!!");
+        }
+        logger.log(req);
         fs.readFile(req.files.displayImage.path, function (err, data) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
