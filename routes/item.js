@@ -9,20 +9,12 @@ module.exports = function(app) {
     // app.param
     // The app.param method maps the itemId parameter prior to executing the route.
     app.param('itemId', function(req, res, next, id) {
-        logger.log("just inside function");
-        logger.log("id = " + id);
         Item.findById(id, function(err, item) {
-            logger.log("Item.findById");
             if (err) {
-                logger.log("if (err)");
                 next(err);
             } else {
-                logger.log("else 1");
-                logger.log(item);
                 res.locals.item = item;
-                logger.log("else 2");
                 next();
-                logger.log("else 3");
             }
         });
     });
@@ -80,20 +72,19 @@ module.exports = function(app) {
     // ============================================================================
     // /items/:itemId/uploadimage POST
     app.post('/items/:itemId/uploadimage',function(req,res) {
-        logger.error(req);
         logger.log("typeof(req.files.displayImage.path) = ");
-        if (typeof req.files.displayImage.path === 'undefined')
-        {
-            logger.log("UNDEFINED!!");
+        if (typeof req.files === 'undefined'){
+            logger.error("req.files is undefined!!");
         }
-        logger.log(req);
-        fs.readFile(req.files.displayImage.path, function (err, data) {
-            var itemId = req.params.itemId;
-            var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
-            fs.writeFile(imageFullPathName, data, function (err) {
-                res.redirect("back");
+        else {
+            fs.readFile(req.files.displayImage.path, function (err, data) {
+                var itemId = req.params.itemId;
+                var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+                fs.writeFile(imageFullPathName, data, function (err) {
+                    res.redirect("back");
+                });
             });
-        });
+        }
     });
 
     // ============================================================================
