@@ -2,6 +2,7 @@
 // Test routes.
 //
 
+var utils = require('./test_utils');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -27,9 +28,9 @@ function getItemIDFromResponse(res) {
 // Tests
 // ============================================================================
 
-describe('Routes', function() {
+describe('Routes', function(done) {
     // /items GET
-    it.skip('/items GET', function(done){
+    it('/items GET', function(){
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
@@ -56,7 +57,7 @@ describe('Routes', function() {
 
     // /items/create POST No Errors
     it.skip('/items/create POST No Errors', function(done){
-        var unique_name = 'TESTING_PUT_NO_ERRORS';
+        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
             .field('title',unique_name)
@@ -77,7 +78,7 @@ describe('Routes', function() {
 
     // ============================================================================
 
-    // /items/create PUT Missing Fields
+    // /items/create POST Missing Fields
     it.skip('/items/create POST Missing Fields', function(done){
         var unique_name = 'TESTING_PUT_MISSING_FIELD';
         var missing_title_err = "Title is required"
@@ -308,7 +309,7 @@ describe('Routes', function() {
     // ============================================================================
 
     // Test item upload image POST With No Errors
-    it('Test item upload image POST With No Errors', function(done){
+    it.skip('Test item upload image POST With No Errors', function(done){
         var edit_item_id = '';
         // Get the item ID.
         chai.request(server)
@@ -331,7 +332,7 @@ describe('Routes', function() {
                         //expect(res.redirects).to.have.length(1);
                     });
                 // to do: move the call to done into the end block if redirect tracking is working
-                done();
+                //done();
             });
     });
 });
