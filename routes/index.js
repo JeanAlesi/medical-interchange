@@ -35,9 +35,9 @@ var routes = function(app) {
     requireRoutes(__dirname, app);
 
     // Defines the root page. can be safely removed!
-    app.get('/', function(req, res) {
-        res.render('index', { mainRoutes : mainRoutes });
-    })
+    // app.get('/', function(req, res) {
+    //     res.render('index', { mainRoutes : mainRoutes });
+    // })
 }
 
 module.exports = routes;
