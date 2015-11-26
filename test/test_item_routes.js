@@ -43,7 +43,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create GET
-    it.skip('/items/create GET', function(done){
+    it('/items/create GET', function(done){
         chai.request(server)
             .get('/items/create')
             .end(function (err, res) {
@@ -56,7 +56,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create POST No Errors
-    it.skip('/items/create POST No Errors', function(done){
+    it('/items/create POST No Errors', function(done){
         var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
