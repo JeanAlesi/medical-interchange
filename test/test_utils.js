@@ -30,7 +30,7 @@ afterEach(function (done) {
 ///////////////////////////////////////////////////////////////////////////////
 // mocha hook which runs after the last test
 after(function (done) {
-    deleteAllDatabaseItems()
+    deleteAllDatabaseItems();
     mongoose.disconnect();
     return done();
 });
