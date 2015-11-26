@@ -58,7 +58,7 @@ function CreateItem(){
 
 describe('Routes', function(done) {
     // /items GET
-    it('/items GET', function(done){
+    it.skip('/items GET', function(done){
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
@@ -71,7 +71,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create GET
-    it('/items/create GET', function(done){
+    it.skip('/items/create GET', function(done){
         chai.request(server)
             .get('/items/create')
             .end(function (err, res) {
@@ -84,7 +84,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create POST No Errors
-    it('/items/create POST No Errors', function(done){
+    it.skip('/items/create POST No Errors', function(done){
         CreateItem();
         done();
     });
@@ -92,7 +92,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create POST Missing Fields
-    it('/items/create POST Missing Fields', function(done){
+    it.skip('/items/create POST Missing Fields', function(done){
         var unique_name = 'TESTING_PUT_MISSING_FIELD';
         var missing_title_err = "Title is required"
         var missing_description_err = "Description is required";
@@ -118,7 +118,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item description test
-    it('Test items description', function(done){
+    it.skip('Test items description', function(done){
         CreateItem();
 
         // Get item ID.
@@ -139,7 +139,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item delete GET
-    it('Test items deletion GET', function(done){
+    it.skip('Test items deletion GET', function(done){
         CreateItem();
 
         // Get the item ID.
@@ -160,7 +160,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item delete POST
-    it('Test items deletion POST', function(done){
+    it.skip('Test items deletion POST', function(done){
         CreateItem();
 
         // Get the item ID.
@@ -187,7 +187,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item edit GET
-    it('Test items edit GET', function(done){
+    it.skip('Test items edit GET', function(done){
         var unique_name = 'TEST_ITEM_GET';
         CreateItem();
 
@@ -209,7 +209,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item edit POST No Errors
-    it('Test items edit POST No Errors', function(done){
+    it.skip('Test items edit POST No Errors', function(done){
         var unique_name_before = 'TEST_ITEM_BEFORE';
         var unique_name_after = 'TEST_ITEM_AFTER';
         // Create an item to get a response.
@@ -245,64 +245,54 @@ describe('Routes', function(done) {
             });
     });
 
-    function DeleteItemWithImage() {
-        // verify that the test item has an image
-        chai.request(server)
-            .get('/items')
-            .end(function (err, res) {
-                //console.log(res.text);
-                var item_id = getItemIDFromResponse(res);
-                var imageName = '/images/' + item_id;
-                var imageIndex = res.text.indexOf(imageName);
-                expect(imageIndex).to.not.equal(-1);
-
-                // Get the item ID.
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        deletion_item_id = getItemIDFromResponse(res);
-                        // Delete the item via POST.
-                        chai.request(server)
-                            .post('/items/'.concat(deletion_item_id,'/delete'))
-                            .end(function (err, res) {
-                                res.should.have.status(200);
-                                // Verify we can't view the item again.
-                                chai.request(server)
-                                    .get('/items/'.concat(deletion_item_id,'details'))
-                                    .end(function (err, res) {
-                                        res.should.have.status(404);
-                                    });
-                            });
-                    });
-            });
-    }
-
     // ============================================================================
     // Test item upload image POST With No Errors
-    it('Test item upload image POST With No Errors', function(done){
+    it('Create an item', function(done){
         // Create an item
-        CreateItem();
-
-        var item_id = '';
-        var redirects = [];
-
-        // Get the item ID.
+        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+        chai.request(server)
+            .post('/items/create')
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+            });
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
+                res.should.have.status(200);
+                logger.log("printing response");
+                logger.log(res.text);
+                var index = res.text.indexOf(unique_name);
+                expect(index).to.not.equal(-1);
+                done();
+            });
+    });
+
+    var item_id = '';
+
+    it('Get the item id', function(done){
+        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+        chai.request(server)
+            .get('/items')
+            .end(function (err, res) {
+                res.should.have.status(200);
+                var index = res.text.indexOf(unique_name);
+                expect(index).to.not.equal(-1);
                 item_id = getItemIDFromResponse(res);
+                done();
+            });
+    });
 
-                // upload the image
-                var image_name = __dirname + '/../public/images/P1000788.jpg';
-                chai.request(server)
-                    .post('/items/'.concat(item_id,'/uploadimage'))
-                    .attach('diaplayImage', image_name)
-                    .end(function(err, res) {
-                        // note that we should never get here because the post responds with a redirect
-                        assert(false);
-                    });
-
-                DeleteItemWithImage();
+    it('Upload the image', function(done){
+        // upload the image
+        var image_name = 'c:\\IronKey\\hes\\cscie-71\\project\\medical-interchange\\public\\images\\P1000788.jpg';
+        chai.request(server)
+            .post('/items/'.concat(item_id,'/uploadimage'))
+            .attach('displayImage', image_name)
+            .end(function(err, res) {
+                logger.log("Inside the end block of upload image!");
                 done();
             });
     });

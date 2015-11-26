@@ -72,16 +72,23 @@ module.exports = function(app) {
     // ============================================================================
     // /items/:itemId/uploadimage POST
     app.post('/items/:itemId/uploadimage',function(req,res) {
+        logger.log("entering uploadimage route ...");
+        logger.log(req);
         if (typeof req.files === 'undefined'){
             logger.error("req.files is undefined!");
             res.redirect("back");
         }
         else {
+            logger.log("Inside else block");
             fs.readFile(req.files.displayImage.path, function (err, data) {
+                logger.log("Before req.params.itemId");
                 var itemId = req.params.itemId;
+                logger.log("After req.params.itemId");
                 var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+                logger.log("After imageFullPathName");
                 fs.writeFile(imageFullPathName, data, function (err) {
-                    res.redirect("back");
+                    //res.redirect("back");
+                    res.send("done with upload");
                 });
             });
         }
