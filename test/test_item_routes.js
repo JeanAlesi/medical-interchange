@@ -245,6 +245,38 @@ describe('Routes', function(done) {
             });
     });
 
+    function DeleteItemWithImage() {
+        // verify that the test item has an image
+        chai.request(server)
+            .get('/items')
+            .end(function (err, res) {
+                //console.log(res.text);
+                var item_id = getItemIDFromResponse(res);
+                var imageName = '/images/' + item_id;
+                var imageIndex = res.text.indexOf(imageName);
+                expect(imageIndex).to.not.equal(-1);
+
+                // Get the item ID.
+                chai.request(server)
+                    .get('/items')
+                    .end(function (err, res) {
+                        deletion_item_id = getItemIDFromResponse(res);
+                        // Delete the item via POST.
+                        chai.request(server)
+                            .post('/items/'.concat(deletion_item_id,'/delete'))
+                            .end(function (err, res) {
+                                res.should.have.status(200);
+                                // Verify we can't view the item again.
+                                chai.request(server)
+                                    .get('/items/'.concat(deletion_item_id,'details'))
+                                    .end(function (err, res) {
+                                        res.should.have.status(404);
+                                    });
+                            });
+                    });
+            });
+    }
+
     // ============================================================================
     // Test item upload image POST With No Errors
     it('Test item upload image POST With No Errors', function(done){
@@ -270,18 +302,8 @@ describe('Routes', function(done) {
                         assert(false);
                     });
 
-                // verify that the test item has an image
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        //console.log(res.text);
-                        var item_id = getItemIDFromResponse(res);
-                        var imageName = '/images/' + item_id;
-                        var imageIndex = res.text.indexOf(imageName);
-                        expect(imageIndex).to.not.equal(-1);
-                        done();
-                    });
+                DeleteItemWithImage();
+                done();
             });
     });
-
 });
