@@ -24,6 +24,27 @@ function getItemIDFromResponse(res) {
 }
 
 // ============================================================================
+// Utility function to create an item in the database
+function CreateItem(){
+    var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+    chai.request(server)
+        .post('/items/create')
+        .field('title',unique_name)
+        .field('description','2005 Model Year')
+        .field('category','Hospital Equipment')
+        .field('condition','Used')
+        .end(function(err, res){
+        });
+    chai.request(server)
+        .get('/items')
+        .end(function (err, res) {
+            res.should.have.status(200);
+            var index = res.text.indexOf(unique_name);
+            expect(index).to.not.equal(-1);
+        });
+}
+
+// ============================================================================
 // Tests
 // ============================================================================
 
@@ -56,23 +77,8 @@ describe('Routes', function(done) {
 
     // /items/create POST No Errors
     it('/items/create POST No Errors', function(done){
-        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
-        chai.request(server)
-            .get('/items')
-            .end(function (err, res) {
-                res.should.have.status(200);
-                var index = res.text.indexOf(unique_name);
-                expect(index).to.not.equal(-1);
-                done();
-            });
+        CreateItem();
+        done();
     });
 
     // ============================================================================
@@ -105,16 +111,7 @@ describe('Routes', function(done) {
 
     // Item description test
     it('Test items description', function(done){
-        var unique_name = 'TEST_ITEM_DESCRIPTION';
-        // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
+        CreateItem();
 
         // Get item ID.
         chai.request(server)
@@ -134,17 +131,9 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item delete GET
-    it.skip('Test items deletion GET', function(done){
-        var unique_name = 'TEST_ITEM_DELETION';
-        // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
+    it('Test items deletion GET', function(done){
+        CreateItem();
+
         // Get the item ID.
         chai.request(server)
             .get('/items')
@@ -163,17 +152,9 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item delete POST
-    it.skip('Test items deletion POST', function(done){
-        var unique_name = 'TEST_ITEM_DELETION';
-        // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
+    it('Test items deletion POST', function(done){
+        CreateItem();
+
         // Get the item ID.
         chai.request(server)
             .get('/items')
@@ -198,17 +179,10 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item edit GET
-    it.skip('Test items edit GET', function(done){
+    it('Test items edit GET', function(done){
         var unique_name = 'TEST_ITEM_GET';
-        // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
+        CreateItem();
+
         // Get the item ID.
         chai.request(server)
             .get('/items')
@@ -227,18 +201,12 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item edit POST No Errors
-    it.skip('Test items edit POST No Errors', function(done){
+    it('Test items edit POST No Errors', function(done){
         var unique_name_before = 'TEST_ITEM_BEFORE';
         var unique_name_after = 'TEST_ITEM_AFTER';
         // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name_before)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
+        CreateItem();
+
         // Get the item ID.
         chai.request(server)
             .get('/items')
@@ -265,6 +233,44 @@ describe('Routes', function(done) {
                     });
             });
     });
+
+    // ============================================================================
+
+    // Test item upload image POST With No Errors
+    it('Test item upload image POST With No Errors', function(done){
+        // Create an item
+        CreateItem();
+
+        var item_id = '';
+        var redirects = [];
+
+        // Get the item ID.
+        chai.request(server)
+            .get('/items')
+            .end(function (err, res) {
+                item_id = getItemIDFromResponse(res);
+
+                chai.request(server)
+                    .post('/items/'.concat(item_id,'/uploadimage'))
+                    .attach('displayImage', 'Z:\\raid\\Multimedia\\My Webs\\2013\\KettlePizza\\images\\medium\\P1000788.jpg')
+                    .end(function(err, res) {
+                        // note that we should never get here because the post responds with a redirect
+                        assert(false);
+                    });
+
+                chai.request(server)
+                    .get('/items')
+                    .end(function (err, res) {
+                        //console.log(res.text);
+                        var item_id = getItemIDFromResponse(res);
+                        var imageName = '/images/' + item_id;
+                        var imageIndex = res.text.indexOf(imageName);
+                        expect(imageIndex).to.not.equal(-1);
+                        done();
+                    });
+            });
+    });
+
 
     // ============================================================================
 
@@ -302,36 +308,6 @@ describe('Routes', function(done) {
                         res.should.have.status(200);
                         done();
                     });
-            });
-    });
-
-    // ============================================================================
-
-    // Test item upload image POST With No Errors
-    it.skip('Test item upload image POST With No Errors', function(done){
-        var edit_item_id = '';
-        // Get the item ID.
-        chai.request(server)
-            .get('/items')
-            .end(function (err, res) {
-                edit_item_id = getItemIDFromResponse(res);
-
-                chai.request(server)
-                    .post('/items/'.concat(edit_item_id,'/uploadimage'))
-                    .attach('displayImage', 'Z:\\raid\\Multimedia\\My Webs\\2013\\KettlePizza\\images\\medium\\P1000788.jpg')
-                    // to do: try to find a way to make superagent track the redirect
-                    //.res.redirects(1)
-                    .end(function(err, res){
-                        // note that we never get here because the post responds with a redirect
-                        // to do: delete this code if we can get redirect tracking to work.
-                        assert(false);
-
-                        // to do: enable this code if we can get redirect tracking to work.
-                        //res.should.have.status(200);
-                        //expect(res.redirects).to.have.length(1);
-                    });
-                // to do: move the call to done into the end block if redirect tracking is working
-                //done();
             });
     });
 });

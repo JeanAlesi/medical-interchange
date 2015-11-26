@@ -72,9 +72,9 @@ module.exports = function(app) {
     // ============================================================================
     // /items/:itemId/uploadimage POST
     app.post('/items/:itemId/uploadimage',function(req,res) {
-        logger.log("typeof(req.files.displayImage.path) = ");
         if (typeof req.files === 'undefined'){
-            logger.error("req.files is undefined!!");
+            logger.error("req.files is undefined!");
+            res.redirect("back");
         }
         else {
             fs.readFile(req.files.displayImage.path, function (err, data) {
