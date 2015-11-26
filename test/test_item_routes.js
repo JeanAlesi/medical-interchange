@@ -2,6 +2,11 @@
 // Test routes.
 //
 
+// Note: The SuperAgent operators like .post, .end, etc just don't
+// seem to work right outside of a Mocha "it" test.  If we can find a
+// fix for this problem then a lot of test helpers could be factored
+// out (like getting an ID from a single database item).
+
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -15,6 +20,9 @@ chai.use(chaiHttp);
 // Helper functions
 // ============================================================================
 
+// ============================================================================
+// Utility function to get an item ID from a response containing a single
+// databse item.
 function getItemIDFromResponse(res) {
     // Split the string into tokens.
     var separators = ['"', '/'];
@@ -221,11 +229,14 @@ describe('Routes', function(done) {
                     .field('condition','Used')
                     .end(function(err, res) {
                     });
+
                 // Verify changes.
                 chai.request(server)
                     .get('/items')
                     .end(function (err, res) {
                         res.should.have.status(200);
+
+                        // to do: Fix this section of code
                         var name_after_name_index = res.text.indexOf(unique_name_after);
                         //expect(name_after_name_index).to.not.equal(-1);
                         //console.log(res);
@@ -235,7 +246,6 @@ describe('Routes', function(done) {
     });
 
     // ============================================================================
-
     // Test item upload image POST With No Errors
     it('Test item upload image POST With No Errors', function(done){
         // Create an item
