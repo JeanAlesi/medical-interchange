@@ -2,7 +2,6 @@
 // Test routes.
 //
 
-var utils = require('./test_utils');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -30,7 +29,7 @@ function getItemIDFromResponse(res) {
 
 describe('Routes', function(done) {
     // /items GET
-    it('/items GET', function(){
+    it('/items GET', function(done){
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
@@ -79,7 +78,7 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // /items/create POST Missing Fields
-    it.skip('/items/create POST Missing Fields', function(done){
+    it('/items/create POST Missing Fields', function(done){
         var unique_name = 'TESTING_PUT_MISSING_FIELD';
         var missing_title_err = "Title is required"
         var missing_description_err = "Description is required";
@@ -105,32 +104,32 @@ describe('Routes', function(done) {
     // ============================================================================
 
     // Item description test
-    // to do: it() was misplaced in this test - fix this problem.
-    it.skip('Test items description', function(done){
-    var unique_name = 'TEST_ITEM_DESCRIPTION';
-    // Create an item to get a response.
-    chai.request(server)
-        .post('/items/create')
-        .field('title',unique_name)
-        .field('description','2005 Model Year')
-        .field('category','Hospital Equipment')
-        .field('condition','Used')
-        .end(function(err, res){
-        });
-    // Get item ID.
-    chai.request(server)
-        .get('/items')
-        .end(function (err, res) {
-            desc_item_id = getItemIDFromResponse(res);
-        });
-
+    it('Test items description', function(done){
+        var unique_name = 'TEST_ITEM_DESCRIPTION';
+        // Create an item to get a response.
         chai.request(server)
-            .get('/items/'.concat(desc_item_id,'/detail'))
+            .post('/items/create')
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+            });
+
+        // Get item ID.
+        chai.request(server)
+            .get('/items')
             .end(function (err, res) {
-                res.should.have.status(200);
-                done();
+                desc_item_id = getItemIDFromResponse(res);
+                chai.request(server)
+                    .get('/items/'.concat(desc_item_id,'/detail'))
+                    .end(function (err, res) {
+                        res.should.have.status(200);
+                        done();
+                    });
             });
     });
+
 
     // ============================================================================
 

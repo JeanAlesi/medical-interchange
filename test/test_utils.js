@@ -11,19 +11,26 @@ function deleteAllDatabaseItems()
     for (var i in mongoose.connection.collections) {
         mongoose.connection.collections[i].remove(function() {});
     }
-    mongoose.disconnect();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// mocha hook which runs before the first test runs
+// mocha hook which runs before the first test
 before(function (done) {
     deleteAllDatabaseItems();
     return done();
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// mocha hook which runs after each test runs
+// mocha hook which runs after each test
 afterEach(function (done) {
     deleteAllDatabaseItems();
+    return done();
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// mocha hook which runs after the last test
+after(function (done) {
+    deleteAllDatabaseItems()
+    mongoose.disconnect();
     return done();
 });
