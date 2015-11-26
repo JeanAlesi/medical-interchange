@@ -249,11 +249,11 @@ describe('Routes', function(done) {
             .get('/items')
             .end(function (err, res) {
                 item_id = getItemIDFromResponse(res);
-                var image_name = __dirname + '/../public/images/P1000788.jpg';
+
                 // upload the image
+                var image_name = __dirname + '/../public/images/P1000788.jpg';
                 chai.request(server)
                     .post('/items/'.concat(item_id,'/uploadimage'))
-                // .attach('displayImage', 'Z:\\raid\\Multimedia\\My Webs\\2013\\KettlePizza\\images\\medium\\P1000788.jpg')
                     .attach('diaplayImage', image_name)
                     .end(function(err, res) {
                         // note that we should never get here because the post responds with a redirect
