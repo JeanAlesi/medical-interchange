@@ -284,43 +284,4 @@ describe('Routes', function(done) {
             });
     });
 
-
-    // ============================================================================
-
-    // Item edit POST with Errors
-    it.skip('Test items edit POST With Errors', function(done){
-        var unique_name_before = 'TEST_ITEM_BEFORE';
-        var unique_name_after = 'TEST_ITEM_AFTER';
-        // Create an item to get a response.
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name_before)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-            });
-        // Get the item ID.
-        chai.request(server)
-            .get('/items')
-            .end(function (err, res) {
-                edit_item_id = getItemIDFromResponse(res);
-                // Make changes to the name.
-                chai.request(server)
-                    .post('/items/'.concat('BAD_ITEM_ID_NAME________', "/edit"))
-                    .field('title', unique_name_after)
-                    .field('description','2005 Model Year')
-                    .field('category','Hospital Equipment')
-                    .field('condition','Used')
-                    .end(function(err, res) {
-                    });
-                // Verify changes.
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        res.should.have.status(200);
-                        done();
-                    });
-            });
-    });
 });
