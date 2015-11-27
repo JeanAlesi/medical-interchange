@@ -1,7 +1,20 @@
 var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
-    logger = require('console-plus');
+    logger = require('console-plus'),
+    path = require('path');
+
+function fileExists(filePath)
+{
+    try
+    {
+        return fs.statSync(filePath).isFile();
+    }
+    catch (err)
+    {
+        return false;
+    }
+}
 
 module.exports = function(app) {
 
@@ -102,36 +115,24 @@ module.exports = function(app) {
     // ============================================================================
     // /items/:itemId/delete POST
     app.post('/items/:itemId/delete', function(req, res) {
-        try
-        {
+        try{
             // check if this item has an uploaded image file
             var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+            logger.log("imageFullPathName = " + imageFullPathName);
+            var normalizedPathName = path.normalize(imageFullPathName);
+            logger.log("normalizedPathName = " + normalizedPathName);
 
-            // get the stats for the image file
-            fs.lstat(imageFullPathName, function(err, stats)
-                     {
-                         if (err)
-                         {
-                             console.error(err.message);
-                             console.error(err.stack);
-                         }
-                         else
-                         {
-                             // if an image exists
-                             if (stats.isFile())
-                             {
-                                 // delete the image
-                                 fs.unlink(imageFullPathName, function(err)
-                                           {
-                                               if (err)
-                                               {
-                                                   console.error(err.message);
-                                                   console.error(err.stack);
-                                               }
-                                           });
-                             }
-                         }
-                     });
+            // delete the image if it exists
+            fs.exists(normalizedPathName, function(exists) {
+                console.log("Found the file: " + normalizedPathName);
+                normalizedPathName = normalizedPathName.replace(/\\/g,"\\\\");
+                console.log("New path name = " + normalizedPathName);
+                fs.unlink(normalizedPathName, function(err){
+                    if (err){
+                        console.error("Error in call to fs.unlink");
+                    }
+                });
+            });
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
@@ -148,6 +149,7 @@ module.exports = function(app) {
         }
         catch (err)
         {
+            logger.error("Inside /items/:itemId/delete Item Remove Catch Block ...");
             console.error(err.message);
             console.error(err.stack);
         }
