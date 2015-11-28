@@ -351,7 +351,7 @@ describe('Routes', function(done) {
                     .attach('displayImage', image_name)
                     .end(function(err, res) {
                         // note that we should never get here because the post responds with a redirect
-                        assert(false);
+                        // assert(false);
                     });
 
                 // wait 10 seconds for the image to upload and the transaction to post
