@@ -2,7 +2,9 @@ var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
     logger = require('console-plus'),
-    path = require('path');
+    path = require('path'),
+    // to do: Add sanitize-filename to package.json
+    sanitize = require('sanitize-filename');
 
 function fileExists(filePath)
 {
@@ -118,21 +120,19 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try{
             // check if this item has an uploaded image file
-            var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+            var imageFullPathName = path.join(__dirname, "../public/images",
+                                              sanitize(req.params.itemId));
             logger.log("imageFullPathName = " + imageFullPathName);
-            var normalizedPathName = path.normalize(imageFullPathName);
-            logger.log("normalizedPathName = " + normalizedPathName);
 
-            // delete the image if it exists
-            fs.exists(normalizedPathName, function(exists) {
-                console.log("Found the file: " + normalizedPathName);
-                normalizedPathName = normalizedPathName.replace(/\\/g,"\\\\");
-                console.log("New path name = " + normalizedPathName);
-                fs.unlink(normalizedPathName, function(err){
-                    if (err){
-                        console.error("Error in call to fs.unlink");
-                    }
-                });
+            fs.unlink(imageFullPathName, function(err){
+                //if (err.code != 'ENOENT'){
+                if (err){
+                    logger.log("Error in call to fs.unlink", err);
+                }
+                else{
+                    logger.log("No file found");
+                }
+                logger.log("Delete Success");
             });
 
             // remove the item from the database

@@ -56,7 +56,7 @@ function CreateItem(){
             // never get here because the server doesn't send a response
         });
     // wait for the server to finish creating the item
-    sleep(10000);
+    sleep(1000);
 }
 
 // ============================================================================
@@ -103,7 +103,7 @@ describe('Routes', function(done) {
                 // never get here because the server doesn't send a response
             });
         // wait for the server to finish creating the item
-        sleep(10000);
+        sleep(1000);
         done();
     });
 
@@ -137,6 +137,7 @@ describe('Routes', function(done) {
 
     // Item description test
     it('Test items description', function(done){
+        logger.log("Starting Test items description test");
         var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
@@ -148,7 +149,7 @@ describe('Routes', function(done) {
                 // never get here because the server doesn't send a response
             });
         // wait for the server to finish creating the item
-        sleep(10000);
+        sleep(1000);
 
         // Get item ID.
         chai.request(server)
@@ -159,6 +160,7 @@ describe('Routes', function(done) {
                     .get('/items/'.concat(desc_item_id,'/detail'))
                     .end(function (err, res) {
                         res.should.have.status(200);
+                        logger.log("Ending Test items description test");
                         done();
                     });
             });
@@ -181,7 +183,7 @@ describe('Routes', function(done) {
                 // never get here because the server doesn't send a response
             });
         // wait for the server to finish creating the item
-        sleep(10000);
+        sleep(1000);
 
         // Get the item ID.
         chai.request(server)
@@ -215,7 +217,7 @@ describe('Routes', function(done) {
             });
 
         // wait for the server to finish creating the item
-        sleep(10000);
+        sleep(1000);
 
         // Get the item ID.
         chai.request(server)
@@ -253,7 +255,7 @@ describe('Routes', function(done) {
             // never get here because the server doesn't send a response
         });
     // wait for the server to finish creating the item
-    sleep(10000);
+    sleep(1000);
 
         // Get the item ID.
         chai.request(server)
