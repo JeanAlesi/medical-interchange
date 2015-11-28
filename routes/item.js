@@ -2,21 +2,9 @@ var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
     logger = require('console-plus'),
-    path = require('path'),
+    path = require('path');
     // to do: Add sanitize-filename to package.json
-    sanitize = require('sanitize-filename');
-
-function fileExists(filePath)
-{
-    try
-    {
-        return fs.statSync(filePath).isFile();
-    }
-    catch (err)
-    {
-        return false;
-    }
-}
+    //sanitize = require('sanitize-filename');
 
 module.exports = function(app) {
 
@@ -119,28 +107,29 @@ module.exports = function(app) {
     // /items/:itemId/delete POST
     app.post('/items/:itemId/delete', function(req, res) {
         try{
-            // check if this item has an uploaded image file
-            var imageFullPathName = path.join(__dirname, "../public/images",
-                                              sanitize(req.params.itemId));
-            logger.log("imageFullPathName = " + imageFullPathName);
+            // wew To Do: Fix image deletion code
+            // // check if this item has an uploaded image file
+            // var imageFullPathName = path.join(__dirname, "../public/images",
+            //                                   sanitize(req.params.itemId));
+            // logger.log("imageFullPathName = " + imageFullPathName);
 
-            fs.unlink(imageFullPathName, function(err){
-                //if (err.code != 'ENOENT'){
-                if (err){
-                    logger.log("Error in call to fs.unlink", err);
-                }
-                else{
-                    logger.log("No file found");
-                }
-                logger.log("Delete Success");
-            });
+            // fs.unlink(imageFullPathName, function(err){
+            //     //if (err.code != 'ENOENT'){
+            //     if (err){
+            //         logger.log("Error in call to fs.unlink", err);
+            //     }
+            //     else{
+            //         logger.log("No file found");
+            //     }
+            //     logger.log("Delete Success");
+            // });
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
                 if (err)
                 {
-                    console.error(err.message);
-                    console.error(err.stack);
+                    logger.error(err.message);
+                    logger.error(err.stack);
                 }
                 else
                 {
@@ -151,8 +140,8 @@ module.exports = function(app) {
         catch (err)
         {
             logger.error("Inside /items/:itemId/delete Item Remove Catch Block ...");
-            console.error(err.message);
-            console.error(err.stack);
+            logger.error(err.message);
+            logger.error(err.stack);
         }
     });
 };
