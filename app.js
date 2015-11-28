@@ -3,6 +3,9 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var config = require('./config');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var MongoStore = require('connect-mongo')(express);
 
@@ -30,6 +33,9 @@ app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.multipart());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.session({
     secret: config.sessionSecret,
     store: new MongoStore({
@@ -46,6 +52,12 @@ app.use(express.session({
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '/public')));
+
+// passport config
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 // development only
 if ('development' == app.get('env')) {
