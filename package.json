@@ -20,7 +20,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha test/item_model.js",
-    "cover": "istanbul cover _mocha  --timeout 3000"
+    "cover": "istanbul cover _mocha -- -R spec --timeout 3000"
   },
   "repository": {
     "type": "git",
