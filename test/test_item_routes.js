@@ -7,6 +7,7 @@
 // fix for this problem then a lot of test helpers could be factored
 // out (like getting an ID from a single database item).
 
+var mongoose = require('mongoose');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -19,6 +20,15 @@ chai.use(chaiHttp);
 // ============================================================================
 // Helper functions
 // ============================================================================
+///////////////////////////////////////////////////////////////////////////////
+// utility function which deletes all items in the database.
+function deleteAllDatabaseItems()
+{
+    // for each item in the database
+    for (var i in mongoose.connection.collections) {
+        mongoose.connection.collections[i].remove(function() {});
+    }
+}
 
 // ============================================================================
 // Utility function to get an item ID from a response containing a single
@@ -63,7 +73,15 @@ function CreateItem(){
 // Tests
 // ============================================================================
 
-describe('Routes', function(done) {
+// ============================================================================
+describe('DESCRIBE /items GET', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
+
     // /items GET
     it('/items GET', function(done){
         chai.request(server)
@@ -75,7 +93,22 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE /items/create GET', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // /items/create GET
     it('/items/create GET', function(done){
@@ -88,7 +121,22 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE /items/create POST No Errors', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // /items/create POST No Errors
     it('/items/create POST No Errors', function(done){
@@ -107,7 +155,22 @@ describe('Routes', function(done) {
         done();
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE /items/create POST Missing Fields', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // /items/create POST Missing Fields
     it('/items/create POST Missing Fields', function(done){
@@ -133,10 +196,25 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE Item description test', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // Item description test
-    it('Test items description', function(done){
+    it('Create an item', function(done){
         logger.log("Starting Test items description test");
         var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
         chai.request(server)
@@ -146,19 +224,27 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used')
             .end(function(err, res){
-                // never get here because the server doesn't send a response
+                // should never get here because the server doesn't send a response
+                // in practice - the following code never executes
+                logger.log("Inside end block");
+                done();
             });
         // wait for the server to finish creating the item
         sleep(1000);
+        done();
+    });
 
+    it('Verify the new item was created', function(done){
         // Get item ID.
         chai.request(server)
             .get('/items')
             .end(function (err, res) {
+                logger.log("Inside end block");
                 desc_item_id = getItemIDFromResponse(res);
                 chai.request(server)
                     .get('/items/'.concat(desc_item_id,'/detail'))
                     .end(function (err, res) {
+                        logger.log("Inside end block");
                         res.should.have.status(200);
                         logger.log("Ending Test items description test");
                         done();
@@ -166,8 +252,22 @@ describe('Routes', function(done) {
             });
     });
 
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
 
-    // ============================================================================
+// ============================================================================
+describe('DESCRIBE Item delete GET', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // Item delete GET
     it('Test items deletion GET', function(done){
@@ -200,7 +300,22 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE Item delete Post', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // Item delete POST
     it('Test items deletion POST', function(done){
@@ -240,7 +355,22 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE Item edit Get', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
 
     // Item edit GET
     it('Test items edit GET', function(done){
@@ -271,55 +401,23 @@ describe('Routes', function(done) {
             });
     });
 
-    // ============================================================================
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
 
-    // Items edit POST No Errors
-    it('Test items edit POST No Errors', function(done){
-        var unique_name_after = 'TEST_ITEM_AFTER';
-
-        // create the item
-        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
-        chai.request(server)
-            .post('/items/create')
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .end(function(err, res){
-                // never get here because the server doesn't send a response
-            });
-
-        // Get the item ID.
-        chai.request(server)
-            .get('/items')
-            .end(function (err, res) {
-                edit_item_id = getItemIDFromResponse(res);
-                // Make changes to the name.
-                chai.request(server)
-                    .post('/items/'.concat(edit_item_id, "/edit"))
-                    .field('title', unique_name_after)
-                    .field('description','2005 Model Year')
-                    .field('category','Hospital Equipment')
-                    .field('condition','Used')
-                    .end(function(err, res) {
-                    });
-
-                // Verify changes.
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        res.should.have.status(200);
-
-                        // to do: Fix this section of code
-                        var name_after_name_index = res.text.indexOf(unique_name_after);
-                        //expect(name_after_name_index).to.not.equal(-1);
-                        //logger.log(res);
-                        done();
-                    });
-            });
+// ============================================================================
+describe('DESCRIBE Item upload image Post', function(done) {
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
     });
 
-    // ============================================================================
     // Test item upload image POST With No Errors
     it('Test item upload image POST With No Errors', function(done){
         // create the item
@@ -354,7 +452,7 @@ describe('Routes', function(done) {
                         // assert(false);
                     });
 
-                // wait 10 seconds for the image to upload and the transaction to post
+                // wait for the image to upload and the transaction to post
                 sleep(1000);
 
                 // to do: verify that the test item has the uploaded image
@@ -383,5 +481,101 @@ describe('Routes', function(done) {
                             });
                     });
             });
+    });
+
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the after hook");
+        return done();
+    });
+});
+
+// ============================================================================
+describe('DESCRIBE Edit Item No Errors', function(done) {
+    // Note: This test had to be broken up int separate "it" tests
+    // because HTTP caching was preventing the final get from
+    // accessing the edited / updated item data (cached data was used
+    // instead).  Breaking the server operations up into separate test
+    // cases worked around the cache problem.
+
+    var edit_item_id;
+    var unique_name_after = 'TEST_ITEM_AFTER';
+
+    before(function (done) {
+        logger.log("Starting the before hook");
+        deleteAllDatabaseItems();
+        logger.log("Ending the before hook");
+        return done();
+    });
+
+    // Items edit POST No Errors
+    it('Create the item', function(done){
+        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+
+        // create the item
+        chai.request(server)
+            .post('/items/create')
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+                //logger.log("Inside .post");
+                // never get here because the server doesn't send a response
+            });
+        //logger.log("after .post");
+        sleep(1000);
+        done();
+    });
+
+    it('Get the new item ID and edit the item', function(done){
+        // Get the item ID.
+        chai.request(server)
+            .get('/items')
+        //.use(noCache)
+            .end(function (err, res) {
+                //logger.log("inside first .get");
+                edit_item_id = getItemIDFromResponse(res);
+                // Make changes to the name.
+                chai.request(server)
+                    .post('/items/'.concat(edit_item_id, "/edit"))
+                    .field('title', unique_name_after)
+                    .field('description','2005 Model Year')
+                    .field('category','Hospital Equipment')
+                    .field('condition','Used')
+                    .end(function(err, res) {
+                        //logger.log("Inside the end block of Test items edit POST No Errors.");
+                    });
+                sleep(1000);
+                done();
+            });
+    });
+
+    it('Verify the edited item', function(done){
+        // Verify changes.
+        chai.request(server)
+            .get('/items')
+            .end(function (err, res) {
+                //logger.log("inside second .get");
+                res.should.have.status(200);
+
+                // to do: Fix this section of code
+                //expect(res.to.contain(unique_name_after));
+                //logger.log(res);
+                var unique_name_index = res.text.indexOf(unique_name_after);
+                expect(unique_name_index).to.not.equal(-1);
+                done();
+            });
+    });
+
+    after(function (done) {
+        logger.log("Starting the after hook");
+        deleteAllDatabaseItems();
+
+        // VERY IMPORTANT: Only call disconnect() after the very last test is complete!
+        mongoose.disconnect();
+        logger.log("Ending the after hook");
+        return done();
     });
 });

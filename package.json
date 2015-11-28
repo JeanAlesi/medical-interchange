@@ -11,7 +11,8 @@
     "express": "3.4.x",
     "jade": "0.35.x",
     "mongoose": "3.6.x",
-    "nodemon": "^1.8.1"
+    "nodemon": "^1.8.1",
+    "superagent-no-cache": "^0.1.0"
   },
   "devDependencies": {
     "istanbul": "^0.4.0",
