@@ -1,8 +1,14 @@
+//
+// Test item model
+//
+
 var expect    = require("chai").expect;
 var mongoose = require("mongoose");
 var Item = require('../models/item')
 
 describe("Item model", function() {
+
+// ============================================================================
 
     describe("Title must be present", function() {
         it("Add empty title", function() {
@@ -14,6 +20,8 @@ describe("Item model", function() {
         });
     });
 
+// ============================================================================
+
     describe("Description must be present", function() {
         it("Add empty description", function() {
             var item = new Item({title:"boo",category:"Machinery",condition:"Used - Great"});
@@ -23,6 +31,8 @@ describe("Item model", function() {
             });
         });
     });
+
+// ============================================================================
 
     describe("Category must be present", function() {
         it("Add empty category", function() {
@@ -34,6 +44,8 @@ describe("Item model", function() {
         });
     });
 
+// ============================================================================
+
     describe("Condition must be present", function() {
         it("Add empty condition", function() {
             var item = new Item({title:"boo",description:"blah",category:"Machinery"});
@@ -43,6 +55,8 @@ describe("Item model", function() {
             });
         });
     });
+
+// ============================================================================
 
     // to do: Change this test to accomodate the to be defined condition enumeration
     describe("Condition must be: A, B, C, D, F", function() {
