@@ -44,6 +44,7 @@ describe('Login tests', function() {
 
   // Register POST and verification.
   it('/register POST', function(done){
+    this.timeout(5000);
     var unique_username = 'registerpostuser';
     var unique_password = 'p4ssw0rd';
     chai.request(server)
@@ -68,6 +69,7 @@ describe('Login tests', function() {
 
   // Login POST and verification.
   it('/login POST and verification', function(done){
+    this.timeout(5000);
     var unique_username = 'loginpostuser';
     var unique_password = 'p4ssw0rd';
     // Create the user.
