@@ -97,7 +97,7 @@ describe('Login tests', function() {
       .redirects(0)
       .field("username", unique_username)
       .field("password", unique_password)
-      .then(function (err, res) {
+      .end(function (err, res) {
         // Verify the user is there and can login.
         chai.request(server)
           .post('/login')
