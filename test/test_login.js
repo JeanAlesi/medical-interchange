@@ -10,12 +10,6 @@ var expect = require('chai').expect;
 
 chai.use(chaiHttp);
 
-// Force promises libraries.
-if (!global.Promise) {
-  var q = require('q');
-  chai.request.addPromises(q.Promise);
-}
-
 // ============================================================================
 // Helper functions
 // ============================================================================
