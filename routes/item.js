@@ -1,6 +1,9 @@
 var Item = require('../models/item'),
     fs = require("fs"),
-    mapper = require('../lib/model-mapper');
+    mapper = require('../lib/model-mapper'),
+    sanitize = require('sanitize-filename'),
+    logger = require('console-plus'),
+    path = require('path');
 
 module.exports = function(app) {
 
@@ -76,34 +79,19 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
+            // wew To Do: Fix image deletion code
             // check if this item has an uploaded image file
-            var imageFullPathName = __dirname + "/../public/images/" + req.params.itemId;
+            logger.log("Entering delete");
+            var imageFullPathName = path.join(__dirname, "../public/images",
+                                              sanitize(req.params.itemId));
+            logger.log("imageFullPathName = " + imageFullPathName);
 
-            // get the stats for the image file
-            fs.lstat(imageFullPathName, function(err, stats)
-                     {
-                         if (err)
-                         {
-                             console.error(err.message);
-                             console.error(err.stack);
-                         }
-                         else
-                         {
-                             // if an image exists
-                             if (stats.isFile())
-                             {
-                                 // delete the image
-                                 fs.unlink(imageFullPathName, function(err)
-                                           {
-                                               if (err)
-                                               {
-                                                   console.error(err.message);
-                                                   console.error(err.stack);
-                                               }
-                                           });
-                             }
-                         }
-                     });
+            fs.unlink(imageFullPathName, function(err){
+                if (err){
+                    // We always seem to get an ENOENT error but the file was successfully deleted.
+                    // logger.log("Error in call to fs.unlink", err);
+                }
+            });
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
