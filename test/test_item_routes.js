@@ -58,6 +58,7 @@ describe('Routes', function() {
         var unique_name = 'TESTING_PUT_NO_ERRORS';
         chai.request(server)
             .post('/items/create')
+            .redirects(0)
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
@@ -84,6 +85,7 @@ describe('Routes', function() {
         var missing_category_err = "Category is required";
         chai.request(server)
             .post('/items/create')
+            .redirects(0)
             // Missing title.
             // Missing description.
             // Missing category.
@@ -102,29 +104,30 @@ describe('Routes', function() {
 
 // ============================================================================
 
-    // Item description test
-    var unique_name = 'TEST_ITEM_DESCRIPTION';
-    // Create an item to get a response.
-    chai.request(server)
-      .post('/items/create')
-      .field('title',unique_name)
-      .field('description','2005 Model Year')
-      .field('category','Hospital Equipment')
-      .field('condition','Used')
-      .end(function(err, res){
-      });
-    // Get item ID.
-    chai.request(server)
-      .get('/items')
-      .end(function (err, res) {
-        desc_item_id = getItemIDFromResponse(res);
-    });
     it('Test items description', function(done){
+        // Item description test
+        var unique_name = 'TEST_ITEM_DESCRIPTION';
+        // Create an item to get a response.
         chai.request(server)
-          .get('/items/'.concat(desc_item_id,'/detail'))
-          .end(function (err, res) {
-            res.should.have.status(200);
-            done();
+          .post('/items/create')
+          .redirects(0)
+          .field('title',unique_name)
+          .field('description','2005 Model Year')
+          .field('category','Hospital Equipment')
+          .field('condition','Used')
+          .end(function(err, res){
+            // Get item ID.
+            chai.request(server)
+              .get('/items')
+              .end(function (err, res) {
+                desc_item_id = getItemIDFromResponse(res);
+                chai.request(server)
+                  .get('/items/'.concat(desc_item_id,'/detail'))
+                  .end(function (err, res) {
+                    res.should.have.status(200);
+                    done();
+                  });
+              });
           });
     });
 
@@ -136,6 +139,7 @@ describe('Routes', function() {
       // Create an item to get a response.
       chai.request(server)
         .post('/items/create')
+        .redirects(0)
         .field('title',unique_name)
         .field('description','2005 Model Year')
         .field('category','Hospital Equipment')
@@ -165,30 +169,32 @@ describe('Routes', function() {
       // Create an item to get a response.
       chai.request(server)
         .post('/items/create')
+        .redirects(0)
         .field('title',unique_name)
         .field('description','2005 Model Year')
         .field('category','Hospital Equipment')
         .field('condition','Used')
         .end(function(err, res){
-        });
-      // Get the item ID.
-      chai.request(server)
-        .get('/items')
-        .end(function (err, res) {
-          deletion_item_id = getItemIDFromResponse(res);
-          // Delete the item via POST.
+          // Get the item ID.
           chai.request(server)
-          .post('/items/'.concat(deletion_item_id,'/delete'))
-          .end(function (err, res) {
-            res.should.have.status(200);
-            // Verify we can't view the item again.
-            chai.request(server)
-            .get('/items/'.concat(deletion_item_id,'details'))
+            .get('/items')
             .end(function (err, res) {
-              res.should.have.status(404);
-              done();
+              deletion_item_id = getItemIDFromResponse(res);
+              // Delete the item via POST.
+              chai.request(server)
+              .post('/items/'.concat(deletion_item_id,'/delete'))
+              .redirects(0)
+              .end(function (err, res) {
+                res.should.have.status(302);
+                // Verify we can't view the item again.
+                chai.request(server)
+                .get('/items/'.concat(deletion_item_id,'details'))
+                .end(function (err, res) {
+                  res.should.have.status(404);
+                  done();
+                });
+              });
             });
-          });
         });
     });
 
@@ -200,6 +206,7 @@ describe('Routes', function() {
       // Create an item to get a response.
       chai.request(server)
         .post('/items/create')
+        .redirects(0)
         .field('title',unique_name)
         .field('description','2005 Model Year')
         .field('category','Hospital Equipment')
@@ -230,6 +237,7 @@ describe('Routes', function() {
       // Create an item to get a response.
       chai.request(server)
         .post('/items/create')
+        .redirects(0)
         .field('title',unique_name_before)
         .field('description','2005 Model Year')
         .field('category','Hospital Equipment')
@@ -244,6 +252,7 @@ describe('Routes', function() {
           // Make changes to the name.
           chai.request(server)
           .post('/items/'.concat(edit_item_id, "/edit"))
+          .redirects(0)
           .field('title', unique_name_after)
           .field('description','2005 Model Year')
           .field('category','Hospital Equipment')
