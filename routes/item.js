@@ -17,16 +17,19 @@ module.exports = function(app) {
     });
 
     app.get('/items', function(req, res) {
-        Item.find({}, function(err, items) {
-            res.render('item/index', { items : items });
-        });
+      checkAuth(req,res);
+      Item.find({}, function(err, items) {
+        res.render('item/index', { items : items });
+      });
     });
 
     app.get('/items/create', function(req, res) {
+      checkAuth(req,res);
         res.render('item/create', { item : new Item(), itemConditions : Item.ItemConditions });
     });
 
     app.post('/items/create', function(req, res) {
+      checkAuth(req,res);
         var item = new Item(req.body);
 
         item.save(function(err) {
@@ -41,10 +44,12 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/edit', function(req, res) {
+      checkAuth(req,res);
         res.render('item/edit', { itemConditions : Item.ItemConditions });
     });
 
     app.post('/items/:itemId/edit', function(req, res) {
+      checkAuth(req,res);
         mapper.map(req.body).to(res.locals.item);
 
         res.locals.item.save(function(err) {
@@ -57,6 +62,7 @@ module.exports = function(app) {
     });
 
     app.post('/items/:itemId/uploadimage',function(req,res) {
+      checkAuth(req,res);
         fs.readFile(req.files.displayImage.path, function (err, data) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
@@ -67,14 +73,17 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/detail', function(req, res) {
+      checkAuth(req,res);
         res.render('item/detail');
     });
 
     app.get('/items/:itemId/delete', function(req, res) {
+      checkAuth(req,res);
         res.render('item/delete');
     });
 
     app.post('/items/:itemId/delete', function(req, res) {
+      checkAuth(req,res);
         try
         {
             var imageFullPathName = path.join(__dirname, "../public/images",
@@ -107,6 +116,12 @@ module.exports = function(app) {
         }
     });
 };
+
+function checkAuth(req,res) {
+  if(!req.isAuthenticated()) {
+    res.redirect('/login');
+  }
+}
 
 // Used to build the index page. Can be safely removed!
 module.exports.meta = {

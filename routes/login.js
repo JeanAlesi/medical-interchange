@@ -29,15 +29,10 @@ module.exports = function (app) {
       res.render('login', { user : req.user });
   });
 
-  app.post('/login',
-    passport.authenticate('local'),
-    function(req, res) {
-      // If this function gets called, authentication was successful.
-      // `req.user` contains the authenticated user.
-      res.render('index', { user : req.user });
-      // res.redirect('/users/' + req.user.username);
-  });
-
+  app.post('/login', passport.authenticate('local', {
+    successRedirect: '/items',
+    failureRedirect: '/register'
+  }));
 
   app.get('/logout', function(req, res) {
       req.logout();
