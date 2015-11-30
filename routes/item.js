@@ -1,7 +1,6 @@
 var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
-    sanitize = require('sanitize-filename'),
     logger = require('console-plus'),
     path = require('path');
 
@@ -83,7 +82,7 @@ module.exports = function(app) {
             // check if this item has an uploaded image file
             logger.log("Entering delete");
             var imageFullPathName = path.join(__dirname, "../public/images",
-                                              sanitize(req.params.itemId));
+                                              req.params.itemId);
             logger.log("imageFullPathName = " + imageFullPathName);
 
             fs.unlink(imageFullPathName, function(err){
