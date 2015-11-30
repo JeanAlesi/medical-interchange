@@ -1,7 +1,6 @@
 var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
-    logger = require('console-plus'),
     path = require('path');
 
 module.exports = function(app) {
@@ -78,17 +77,13 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
-            // wew To Do: Fix image deletion code
-            // check if this item has an uploaded image file
-            logger.log("Entering delete");
             var imageFullPathName = path.join(__dirname, "../public/images",
                                               req.params.itemId);
-            logger.log("imageFullPathName = " + imageFullPathName);
 
             fs.unlink(imageFullPathName, function(err){
                 if (err){
                     // We always seem to get an ENOENT error but the file was successfully deleted.
-                    // logger.log("Error in call to fs.unlink", err);
+                    // console.log("Error in call to fs.unlink", err);
                 }
             });
 
