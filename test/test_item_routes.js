@@ -7,8 +7,10 @@ var chaiHttp = require('chai-http');
 var server = require('../app');
 var should = chai.should();
 var expect = require('chai').expect;
+var assert = require('chai').assert;
 var mongoose = require('mongoose');
-
+var path = require('path');
+var fs = require('fs');
 chai.use(chaiHttp);
 
 // ============================================================================
@@ -343,6 +345,14 @@ describe('Routes', function() {
                                                 chai.request(server)
                                                     .get('/items/'.concat(item_id,'/details'))
                                                     .end(function (err, res) {
+                                                        // verify that the image file was actually deleted
+                                                        var imageFullPathName = __dirname + "/../public/images/" + item_id;
+                                                        var normalizedPathName = path.normalize(imageFullPathName);
+                                                        fs.exists(normalizedPathName, function(exists){
+                                                            if (exists){
+                                                                assert(false);
+                                                            }
+                                                        });
                                                         res.should.have.status(404);
                                                         done();
                                                     });
