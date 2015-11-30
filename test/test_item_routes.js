@@ -345,6 +345,8 @@ describe('Routes', function() {
                                                     .get('/items/'.concat(item_id,'/details'))
                                                     .end(function (err, res) {
                                                         res.should.have.status(404);
+                                                        // verify that the image was deleted
+
                                                         done();
                                                     });
                                             });
