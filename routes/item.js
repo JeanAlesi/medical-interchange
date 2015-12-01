@@ -28,6 +28,7 @@ module.exports = function(app) {
 
     app.post('/items/create', function(req, res) {
         var item = new Item(req.body);
+        console.log(item);
 
         item.save(function(err) {
             if (err) {
@@ -35,7 +36,8 @@ module.exports = function(app) {
                     item : item, itemConditions : Item.ItemConditions
                 });
             } else {
-                res.redirect('/items');
+                //res.redirect('/items');
+                res.redirect('/items/' + item._id + '/uploadimage');
             }
         });
     });
@@ -66,6 +68,7 @@ module.exports = function(app) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
             fs.writeFile(imageFullPathName, data, function (err) {
+                console.log("Redirecting Back ...");
                 res.redirect('back');
             });
         });

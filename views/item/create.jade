@@ -6,7 +6,7 @@ block content
   form#item-form(action="/items/create", method="POST")
     fieldset
       legend Create a new Item
-    
+
       .form-group
         mixin label("title", "Title")
 
@@ -29,11 +29,11 @@ block content
         br
         select(id="condition", name="condition")
           for conditionOption in itemConditions
-            option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}    
+            option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}
 
         mixin errorMessage(item, 'condition')
 
     .form-actions
       a.btn.btn-warning(href="/items") Back
-      | 
-      input.btn.btn-primary(type="submit", value="Create")
+      |
+      input.btn.btn-primary(type="submit", value="Next")
