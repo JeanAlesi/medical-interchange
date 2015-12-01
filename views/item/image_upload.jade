@@ -1,0 +1,17 @@
+extends ../layout
+include ../mixins/form-helpers
+
+block content
+  form#item-form(action="/items/" + item._id + "/edit", method="POST", role="form")
+    fieldset
+      legend Image Upload
+  br
+
+  form(action="/items/" + item._id + "/uploadimage", method="post", enctype="multipart/form-data")
+    input(type="file", name="displayImage")
+    input(type="submit", value="Upload")
+  br
+  .form-actions
+  a.btn.btn-warning(href="/items/" + item._id + "/edit") Back
+  |
+  a.btn.btn-primary(href="/items/" + item._id + "/detail", value="Done")
