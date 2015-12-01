@@ -58,7 +58,6 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/uploadimage',function(req,res) {
-        console.log("Entering uploadimage route!");
         res.render('item/image_upload');
     });
 
@@ -67,7 +66,6 @@ module.exports = function(app) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
             fs.writeFile(imageFullPathName, data, function (err) {
-                console.log("Redirecting Back ...");
                 res.redirect('back');
             });
         });

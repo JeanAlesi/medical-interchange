@@ -300,6 +300,37 @@ describe('Routes', function() {
     });
 
     // ============================================================================
+    // Test item upload image GET
+    it('Test item upload image GET', function(done){
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title','Wills Awesome Item')
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+                console.log("done creating the item");
+                // Get the item ID.
+                chai.request(server)
+                    .get('/items')
+                    .end(function (err, res) {
+                        item_id = getItemIDFromResponse(res);
+                        console.log("item_id = ", item_id);
+                        var upload_image_get_route = '/items/'.concat(item_id, '/uploadimage');
+                        console.log(upload_image_get_route);
+                        chai.request(server)
+                            .get(upload_image_get_route)
+                            .end(function (err, res) {
+                                res.should.have.status(200);
+                                done();
+                            });
+                    })
+            });
+    });
+
+    // ============================================================================
 
     // Test item upload image POST With No Errors
     it('Test item upload image POST With No Errors', function(done){
