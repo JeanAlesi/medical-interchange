@@ -8,7 +8,7 @@ var Item = new Schema({
     category: { type: String, required: true },
     condition: { type: String, required: true },
     num_files : {type: Number, min: 0, max: 4, required: false},
-    fileNames : {type: [String], required: false}
+    fileNames : {type: [Schema.ObjectId], required: false}
 });
 
 var ItemModel = mongoose.model('Item', Item);
