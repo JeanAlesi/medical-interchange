@@ -34,6 +34,13 @@ function deleteAllDatabaseItems()
     }
 }
 
+function sleep(time) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        ;
+    }
+}
+
 // ============================================================================
 // Tests
 // ============================================================================
@@ -216,7 +223,7 @@ describe('Routes', function() {
                                 res.should.have.status(302);
                                 // Verify we can't view the item again.
                                 chai.request(server)
-                                    .get('/items/'.concat(deletion_item_id,'details'))
+                                    .get('/items/'.concat(deletion_item_id,'detail'))
                                     .end(function (err, res) {
                                         res.should.have.status(404);
                                         done();
@@ -329,10 +336,10 @@ describe('Routes', function() {
 
     // ============================================================================
 
-    // Test item upload image POST With No Errors
-    it('Test item upload image POST With No Errors', function(done){
+    // Test item upload image POST
+    it('Test item upload image POST', function(done){
         // create the item
-        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+        var unique_name = 'ITEM_UPLOAD_IMAGE';
         chai.request(server)
             .post('/items/create')
             .redirects(0)
@@ -357,34 +364,10 @@ describe('Routes', function() {
                                 chai.request(server)
                                     .get('/items')
                                     .end(function (err, res) {
-                                        var item_id = getItemIDFromResponse(res);
                                         // the image name is in the text segment and its named /images/item_id
                                         var image_name_index = res.text.indexOf('/images/'.concat(item_id));
                                         expect(image_name_index).to.not.equal(-1);
-
-                                        // now delete the item to exercise the route code which deletes
-                                        // the image associated with an item.
-                                        chai.request(server)
-                                            .post('/items/'.concat(item_id,'/delete'))
-                                            .redirects(0)
-                                            .end(function (err, res) {
-                                                res.should.have.status(302);
-                                                // Verify we can't view the item again.
-                                                chai.request(server)
-                                                    .get('/items/'.concat(item_id,'/detail'))
-                                                    .end(function (err, res) {
-                                                        // verify that the image file was actually deleted
-                                                        res.should.have.status(500);
-                                                        var imageFullPathName = __dirname + "/../public/images/" + item_id;
-                                                        var normalizedPathName = path.normalize(imageFullPathName);
-                                                        fs.exists(normalizedPathName, function(exists){
-                                                            if (exists){
-                                                                assert(false);
-                                                            }
-                                                        });
-                                                        done();
-                                                    });
-                                            });
+                                        done();
                                     });
                             });
                     });
@@ -393,10 +376,59 @@ describe('Routes', function() {
 
     // ============================================================================
 
-    // Test item delete image POST With No Errors
-    it('Test item deleteimage POST', function(done){
+    // Test Delete an item which includes an uploaded image
+    it('Test Delete an item which includes an uploaded image', function(done){
         // create the item
-        var unique_name = 'ITEM_CREATE_POST_NO_ERRORS';
+        var unique_name = 'DELETE_ITEM_WITH_IMAGE';
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .end(function(err, res){
+                // Get the item ID.
+                chai.request(server)
+                    .get('/items')
+                    .end(function (err, res) {
+                        item_id = getItemIDFromResponse(res);
+                        // upload the image
+                        var image_name = __dirname + '/../public/images/P1000788.jpg';
+                        chai.request(server)
+                            .post('/items/'.concat(item_id,'/uploadimage'))
+                            .redirects(0)
+                            .attach('displayImage', image_name)
+                            .end(function(err, res) {
+                                // now delete the item
+                                chai.request(server)
+                                    .post('/items/'.concat(item_id,'/delete'))
+                                    .redirects(0)
+                                    .end(function (err, res) {
+                                        res.should.have.status(302);
+                                        // verify that the image file was actually deleted
+                                        var imageFullPathName = __dirname + "/../public/images/" + item_id;
+                                        var normalizedPathName = path.normalize(imageFullPathName);
+                                        fs.exists(normalizedPathName, function(exists){
+                                            if (exists){
+                                                assert(false);
+                                            }
+                                        });
+
+                                        // to do: Check the /detail route to verify that the image was deleted
+                                        done();
+                                    });
+                            });
+                    });
+            });
+    });
+
+    // ============================================================================
+
+    // Test deleteimage route
+    it('Test deleteimage route', function(done){
+        // create the item
+        var unique_name = 'ITEM_DELETE_IMAGE_ROUTE';
         chai.request(server)
             .post('/items/create')
             .redirects(0)
@@ -421,7 +453,6 @@ describe('Routes', function() {
                                 chai.request(server)
                                     .get('/items')
                                     .end(function (err, res) {
-                                        var item_id = getItemIDFromResponse(res);
                                         // the image name is in the text segment and its named /images/item_id
                                         var image_name_index = res.text.indexOf('/images/'.concat(item_id));
                                         expect(image_name_index).to.not.equal(-1);

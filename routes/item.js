@@ -87,22 +87,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/detail', function(req, res) {
-        // get the ID
-        var id = req.params.itemId;
-        console.log("id = ", id);
-
-        // look up the ID in the database
-        Item.findById(id, function(err, theItem) {
-            if (err){
-                // why don't we detect an error?
-                console.log("detected an error");
-                // handle the error
-            }
-            else
-            {
-                res.render('item/detail');
-            }
-        });
+        res.render('item/detail');
     });
 
     app.get('/items/:itemId/delete', function(req, res) {
