@@ -3,6 +3,20 @@ var Item = require('../models/item'),
     mapper = require('../lib/model-mapper'),
     path = require('path');
 
+///////////////////////////////////////////////////////////////////////////////
+// Helper functions
+function deleteImage(req){
+    var imageFullPathName = path.join(__dirname, "../public/images",
+                                      req.params.itemId);
+
+    fs.unlink(imageFullPathName, function(err){
+        if (err){
+            // We always seem to get an ENOENT error but the file was successfully deleted.
+            // console.log("Error in call to fs.unlink", err);
+        }
+    });
+}
+
 module.exports = function(app) {
 
     app.param('itemId', function(req, res, next, id) {
@@ -73,7 +87,22 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/detail', function(req, res) {
-        res.render('item/detail');
+        // get the ID
+        var id = req.params.itemId;
+        console.log("id = ", id);
+
+        // look up the ID in the database
+        Item.findById(id, function(err, theItem) {
+            if (err){
+                // why don't we detect an error?
+                console.log("detected an error");
+                // handle the error
+            }
+            else
+            {
+                res.render('item/detail');
+            }
+        });
     });
 
     app.get('/items/:itemId/delete', function(req, res) {
@@ -83,15 +112,7 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
-            var imageFullPathName = path.join(__dirname, "../public/images",
-                                              req.params.itemId);
-
-            fs.unlink(imageFullPathName, function(err){
-                if (err){
-                    // We always seem to get an ENOENT error but the file was successfully deleted.
-                    // console.log("Error in call to fs.unlink", err);
-                }
-            });
+            deleteImage(req);
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
@@ -111,6 +132,11 @@ module.exports = function(app) {
             console.error(err.message);
             console.error(err.stack);
         }
+    });
+
+    app.post('/items/:itemId/deleteimage', function(req, res) {
+        deleteImage(req);
+        res.redirect('back');
     });
 };
 
