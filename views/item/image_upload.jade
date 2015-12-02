@@ -11,10 +11,6 @@ block content
   form(action="/items/" + item._id + "/uploadimage", method="post", enctype="multipart/form-data")
     input(type="file", name="displayImage")
     input(type="submit", value="Upload")
-
-  form(action="/items/" + item._id + "/deleteimage", method="post")
-     button(type="submit") Delete
-
   br
   .form-actions
   a.btn.btn-warning(href="/items/" + item._id + "/edit") Back

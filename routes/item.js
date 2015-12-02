@@ -3,20 +3,6 @@ var Item = require('../models/item'),
     mapper = require('../lib/model-mapper'),
     path = require('path');
 
-///////////////////////////////////////////////////////////////////////////////
-// Helper functions
-function deleteImage(req){
-    var imageFullPathName = path.join(__dirname, "../public/images",
-                                      req.params.itemId);
-
-    fs.unlink(imageFullPathName, function(err){
-        if (err){
-            // We always seem to get an ENOENT error but the file was successfully deleted.
-            // console.log("Error in call to fs.unlink", err);
-        }
-    });
-}
-
 module.exports = function(app) {
 
     app.param('itemId', function(req, res, next, id) {
@@ -42,7 +28,6 @@ module.exports = function(app) {
 
     app.post('/items/create', function(req, res) {
         var item = new Item(req.body);
-        console.log(item);
 
         item.save(function(err) {
             if (err) {
@@ -82,7 +67,6 @@ module.exports = function(app) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
             fs.writeFile(imageFullPathName, data, function (err) {
-                console.log("Redirecting Back ...");
                 res.redirect('back');
             });
         });
@@ -99,7 +83,15 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
-            deleteImage(req);
+            var imageFullPathName = path.join(__dirname, "../public/images",
+                                              req.params.itemId);
+
+            fs.unlink(imageFullPathName, function(err){
+                if (err){
+                    // We always seem to get an ENOENT error but the file was successfully deleted.
+                    // console.log("Error in call to fs.unlink", err);
+                }
+            });
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
@@ -119,11 +111,6 @@ module.exports = function(app) {
             console.error(err.message);
             console.error(err.stack);
         }
-    });
-
-    app.post('/items/:itemId/deleteimage', function(req, res) {
-        deleteImage(req);
-        res.redirect('back');
     });
 };
 

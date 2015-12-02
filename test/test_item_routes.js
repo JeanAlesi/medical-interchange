@@ -311,15 +311,12 @@ describe('Routes', function() {
             .field('category','Hospital Equipment')
             .field('condition','Used')
             .end(function(err, res){
-                console.log("done creating the item");
                 // Get the item ID.
                 chai.request(server)
                     .get('/items')
                     .end(function (err, res) {
                         item_id = getItemIDFromResponse(res);
-                        console.log("item_id = ", item_id);
                         var upload_image_get_route = '/items/'.concat(item_id, '/uploadimage');
-                        console.log(upload_image_get_route);
                         chai.request(server)
                             .get(upload_image_get_route)
                             .end(function (err, res) {
