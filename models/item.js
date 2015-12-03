@@ -7,7 +7,7 @@ var Item = new Schema({
     description: { type: String, required: true },
     category: { type: String, required: true },
     condition: { type: String, required: true },
-    num_files : {type: Number, min: 0, max: 4, required: false},
+    numFiles : {type: Number, min: 0, max: 4, required: false},
     fileNames : {type: [Schema.ObjectId], required: false}
 });
 
