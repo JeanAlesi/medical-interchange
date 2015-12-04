@@ -6,7 +6,7 @@ var Item = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     category: { type: String, required: true },
-    condition: { type: String, required: true },
+    condition: { type: String, enum: ItemConditions, required: true },
     numFiles : {type: Number, min: 0, max: 4, required: false},
     fileNames : {type: [Schema.ObjectId], required: false}
 });
