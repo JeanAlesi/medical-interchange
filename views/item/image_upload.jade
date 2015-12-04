@@ -2,7 +2,7 @@ extends ../layout
 include ../mixins/form-helpers
 
 block content
-  img(src='/images/' + item._id width="300" height="150" onerror="this.onerror=null;this.src='/images/slug.png';this.width=50;this.height=50;")
+  img(src='/images/' + item.imageFileNames[0] width="300" height="150" onerror="this.onerror=null;this.src='/images/slug.png';this.width=50;this.height=50;")
   form#item-form(action="/items/" + item._id + "/edit", method="POST", role="form")
     fieldset
       legend Image Upload

@@ -1,18 +1,42 @@
 var Item = require('../models/item'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
-    path = require('path');
+    path = require('path'),
+    mongoose = require("mongoose");
 
 ///////////////////////////////////////////////////////////////////////////////
 // Helper functions
 function deleteImage(req){
-    var imageFullPathName = path.join(__dirname, "../public/images",
-                                      req.params.itemId);
+    // Find the item in the database
+    Item.findById(req.params.itemId, function(err, item) {
+        if (err) {
+            console.error("Error finding item", err);
+        }
+        else{
+            // check if this image has an associated image file
+            if (item.imageFileNames.length > 0)
+            {
+                // delete the image file from the disk
+                var imageFullPathName = path.join(__dirname, "../public/images", item.imageFileNames[0]);
+                fs.unlink(imageFullPathName, function(err){
+                    if (err){
+                        // We always seem to get an ENOENT error but the file was successfully deleted.
+                        // console.log("Error in call to fs.unlink", err);
+                    }
+                });
 
-    fs.unlink(imageFullPathName, function(err){
-        if (err){
-            // We always seem to get an ENOENT error but the file was successfully deleted.
-            // console.log("Error in call to fs.unlink", err);
+                // Remove the image file name from the database
+                while (item.imageFileNames.length > 0){
+                    item.imageFileNames.pop();
+                }
+
+                // save the item to the database
+                item.save(function(err){
+                    if (err){
+                        console.error("Error saving item", err);
+                    }
+                });
+            }
         }
     });
 }
@@ -77,12 +101,42 @@ module.exports = function(app) {
     });
 
     app.post('/items/:itemId/uploadimage',function(req,res) {
-        fs.readFile(req.files.displayImage.path, function (err, data) {
-            var itemId = req.params.itemId;
-            var imageFullPathName = __dirname + "/../public/images/" + itemId;
-            fs.writeFile(imageFullPathName, data, function (err) {
+        // to do: handle error conditions
+
+        // delete the existing image from the disk
+        deleteImage(req);
+
+        // read the uploaded file data
+        fs.readFile(req.files.displayImage.path, function (err, fileData) {
+            if(err | (fileData.length == 0)){
                 res.redirect('back');
-            });
+            }
+            else{
+                // write the uploaded file to the /public/images directory
+                var fileName = mongoose.Types.ObjectId().toString();
+                var imageFullPathName = __dirname + "/../public/images/" + fileName;
+                fs.writeFile(imageFullPathName, fileData, function (err) {
+                    // Find the item in the database
+                    Item.findById(res.locals.item._id, function(err, item) {
+                        if (err) {
+                            //console.error("Error finding item", err);
+                            res.redirect('back');
+                        }
+                        else{
+                            // Add the image file name to the database
+                            item.imageFileNames.push(fileName);
+
+                            // save the item to the database
+                            item.save(function(err){
+                                if (err){
+                                    console.error("Error saving item", err);
+                                }
+                            });
+                            res.redirect('back');
+                        }
+                    });
+                });
+            }
         });
     });
 
@@ -97,6 +151,7 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
+            // delete the image from the disk
             deleteImage(req);
 
             // remove the item from the database
@@ -120,6 +175,7 @@ module.exports = function(app) {
     });
 
     app.post('/items/:itemId/deleteimage', function(req, res) {
+        // delete the image from the disk
         deleteImage(req);
         res.redirect('back');
     });

@@ -66,42 +66,6 @@ describe("Item model", function(done) {
 
     // ============================================================================
 
-    it("Test numFiles > 4", function(done) {
-        var item = new Item({title:"the item",description:"the description",
-                             category:"the category",condition:"Used - Poor",
-                             numFiles: 5});
-        Item.create(item, function (err, createdItem) {
-            expect(err).to.exist;
-            done();
-        });
-    });
-
-    // ============================================================================
-
-    it("Test numFiles < 0", function(done) {
-        var item = new Item({title:"the item",description:"the description",
-                             category:"the category",condition:"Used - Poor",
-                             numFiles: -1});
-        Item.create(item, function (err, createdItem) {
-            expect(err).to.exist;
-            done();
-        });
-    });
-
-    // ============================================================================
-
-    it("Test 0 <= numFiles <= 4", function(done) {
-        var item = new Item({title:"the item",description:"the description",
-                             category:"the category",condition:"Used - Poor",
-                             numFiles: 2});
-        Item.create(item, function (err, createdItem) {
-            assert.isNull(err);
-            done();
-        });
-    });
-
-    // ============================================================================
-
     it("Test Single FileName Exists", function(done) {
         // generate a unique object ID to use as the file name
         var fileName = mongoose.Types.ObjectId();
@@ -111,10 +75,10 @@ describe("Item model", function(done) {
         item.category = "the category";
         item.condition = "Used - Poor";
         item.numfiles = 1;
-        item.fileNames.push(fileName);
+        item.imageFileNames.push(fileName.toString());
 
         Item.create(item, function (err, createdItem) {
-            expect(item.fileNames[item.numfiles - 1]).to.equal(fileName);
+            expect(item.imageFileNames[item.numfiles - 1]).to.equal(fileName.toString());
             done();
         });
     });
@@ -128,8 +92,8 @@ describe("Item model", function(done) {
 
         // save a list of unique object ID's for each file name
         for (i = 0; i < MAX_NUM_FILES; ++i){
-            savedFileNames[i] = mongoose.Types.ObjectId();
-            item.fileNames[i] = savedFileNames[i];
+            savedFileNames[i] = mongoose.Types.ObjectId().toString();
+            item.imageFileNames.push(savedFileNames[i]);
         }
 
         // fill in the rest of the record
@@ -143,7 +107,7 @@ describe("Item model", function(done) {
         Item.create(item, function (err, createdItem) {
             // verify that the file names exist
             for (i = 0; i < MAX_NUM_FILES; ++i){
-                expect(item.fileNames[i]).to.equal(savedFileNames[i]);
+                expect(item.imageFileNames[i]).to.equal(savedFileNames[i]);
             }
             done();
         });
