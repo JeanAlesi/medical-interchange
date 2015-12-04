@@ -3,6 +3,20 @@ var Item = require('../models/item'),
     mapper = require('../lib/model-mapper'),
     path = require('path');
 
+///////////////////////////////////////////////////////////////////////////////
+// Helper functions
+function deleteImage(req){
+    var imageFullPathName = path.join(__dirname, "../public/images",
+                                      req.params.itemId);
+
+    fs.unlink(imageFullPathName, function(err){
+        if (err){
+            // We always seem to get an ENOENT error but the file was successfully deleted.
+            // console.log("Error in call to fs.unlink", err);
+        }
+    });
+}
+
 module.exports = function(app) {
 
     app.param('itemId', function(req, res, next, id) {
@@ -35,7 +49,8 @@ module.exports = function(app) {
                     item : item, itemConditions : Item.ItemConditions
                 });
             } else {
-                res.redirect('/items');
+                //res.redirect('/items');
+                res.redirect('/items/' + item._id + '/uploadimage');
             }
         });
     });
@@ -46,14 +61,19 @@ module.exports = function(app) {
 
     app.post('/items/:itemId/edit', function(req, res) {
         mapper.map(req.body).to(res.locals.item);
+        var itemId = req.params.itemId;
 
         res.locals.item.save(function(err) {
             if (err) {
                 res.render('item/edit', { itemConditions : Item.ItemConditions });
             } else {
-                res.redirect('/items');
+                res.redirect('/items/' + itemId + '/uploadimage');
             }
         });
+    });
+
+    app.get('/items/:itemId/uploadimage',function(req,res) {
+        res.render('item/image_upload');
     });
 
     app.post('/items/:itemId/uploadimage',function(req,res) {
@@ -61,7 +81,7 @@ module.exports = function(app) {
             var itemId = req.params.itemId;
             var imageFullPathName = __dirname + "/../public/images/" + itemId;
             fs.writeFile(imageFullPathName, data, function (err) {
-                res.redirect("back");
+                res.redirect('back');
             });
         });
     });
@@ -77,15 +97,7 @@ module.exports = function(app) {
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
-            var imageFullPathName = path.join(__dirname, "../public/images",
-                                              req.params.itemId);
-
-            fs.unlink(imageFullPathName, function(err){
-                if (err){
-                    // We always seem to get an ENOENT error but the file was successfully deleted.
-                    // console.log("Error in call to fs.unlink", err);
-                }
-            });
+            deleteImage(req);
 
             // remove the item from the database
             Item.remove({ _id : req.params.itemId }, function(err) {
@@ -105,6 +117,11 @@ module.exports = function(app) {
             console.error(err.message);
             console.error(err.stack);
         }
+    });
+
+    app.post('/items/:itemId/deleteimage', function(req, res) {
+        deleteImage(req);
+        res.redirect('back');
     });
 };
 

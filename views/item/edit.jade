@@ -25,17 +25,10 @@ block content
         br
         select(id="condition", name="condition")
           for conditionOption in itemConditions
-            option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption} 
+            option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}
         mixin errorMessage(item, 'condition')
 
     .form-actions
       a.btn.btn-warning(href="/items") Back
       |
-      input.btn.btn-primary(type="submit", value="Save")
-
-  br br
-  h4 Image Upload
-
-  form(action="/items/" + item._id + "/uploadimage", method="post", enctype="multipart/form-data")
-    input(type="file", name="displayImage")
-    input(type="submit", value="Upload")
+      input.btn.btn-primary(type="submit", value="Next")
