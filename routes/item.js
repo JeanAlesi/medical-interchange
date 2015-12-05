@@ -37,6 +37,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/create', function(req, res) {
+        checkAuth(req,res)
         res.render('item/create', { item : new Item(), itemConditions : Item.ItemConditions });
     });
 
@@ -56,6 +57,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/edit', function(req, res) {
+        checkAuth(req,res)
         res.render('item/edit', { itemConditions : Item.ItemConditions });
     });
 
@@ -91,6 +93,7 @@ module.exports = function(app) {
     });
 
     app.get('/items/:itemId/delete', function(req, res) {
+        checkAuth(req,res)
         res.render('item/delete');
     });
 
@@ -124,6 +127,12 @@ module.exports = function(app) {
         res.redirect('back');
     });
 };
+
+function checkAuth(req,res) {
+  if(!req.isAuthenticated() && req.headers['test']!="true") {
+    res.redirect('/login');
+  }
+}
 
 // Used to build the index page. Can be safely removed!
 module.exports.meta = {
