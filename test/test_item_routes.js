@@ -485,4 +485,21 @@ describe('Routes', function() {
                     });
             });
     });
+    
+ // ============================================================================
+    // Test that the form doesn't accept an invalid condition
+    it('Does not accept an invalid condition', function(done){
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title','Davids Awesome Item')
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Invalid')
+            .end(function(err, res){
+                expect(res.statusCode).to.equal(200); //200 means it failed as expected (it reloads the page)
+                done();
+            });
+    });
 });
