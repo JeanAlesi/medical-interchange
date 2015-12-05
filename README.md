@@ -22,3 +22,4 @@ bumm scaffold item title:string:required:true description:string:required:true c
 
 ## Sprint Deliveries
 * [Sprint 1](https://github.com/ggerrein/medical-interchange/wiki/Sprint-1-Delivery)
+* [Sprint 2](https://github.com/ggerrein/medical-interchange/wiki/Sprint-2-Delivery)
