@@ -77,6 +77,7 @@ describe('Routes', function() {
     it('/items/create GET', function(done){
         chai.request(server)
             .get('/items/create')
+            .set('test', 'true')
             .end(function (err, res) {
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
@@ -188,6 +189,7 @@ describe('Routes', function() {
                         // request the /items/delete page
                         chai.request(server)
                             .get('/items/'.concat(deletion_item_id,'/delete'))
+                            .set('test', 'true')
                             .end(function (err, res) {
                                 res.should.have.status(200);
                                 done();
@@ -255,6 +257,7 @@ describe('Routes', function() {
                         // Visit the "are you sure?" page.
                         chai.request(server)
                             .get('/items/'.concat(edit_item_id,'/edit'))
+                            .set('test', 'true')
                             .end(function (err, res) {
                                 res.should.have.status(200);
                                 done();

@@ -33,8 +33,6 @@ app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.multipart());
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.session({
     secret: config.sessionSecret,
@@ -49,6 +47,8 @@ app.use(express.session({
     }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '/public')));
