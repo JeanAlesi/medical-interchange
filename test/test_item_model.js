@@ -148,4 +148,35 @@ describe("Item model", function(done) {
             done();
         });
     });
+    
+ // ============================================================================
+
+    it("Accepts a correct enum value for condition", function(done) {
+        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:Item.ItemConditions[0]});
+        Item.create(item, function (err, createdItem) {
+            // Confirm that an error does exist
+            assert.isNull(err);
+            done();
+        });
+    });
+    
+    it("Does not accept an invalid enum value for condition", function(done) {
+        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:"Invalid"});
+        Item.create(item, function (err, createdItem) {
+            // Confirm that an error does exist
+            expect(err).to.exist;
+            done();
+        });
+    });
+    
+    it("Does not accept an invalid form of an enum value", function(done) {
+        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:Item.ItemConditions[0].toLowerCase()});
+        Item.create(item, function (err, createdItem) {
+            // Confirm that an error does exist
+            expect(err).to.exist;
+            done();
+        });
+    });
+    
+    
 });
