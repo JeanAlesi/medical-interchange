@@ -95,7 +95,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 chai.request(server)
                     .get('/items')
@@ -147,7 +147,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get item ID.
                 chai.request(server)
@@ -178,7 +178,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -208,7 +208,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -245,7 +245,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -276,7 +276,7 @@ describe('Routes', function() {
             .field('title',unique_name_before)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -290,7 +290,7 @@ describe('Routes', function() {
                             .field('title', unique_name_after)
                             .field('description','2005 Model Year')
                             .field('category','Hospital Equipment')
-                            .field('condition','Used')
+                            .field('condition','Used - Good')
                             .end(function(err, res) {
                                 // Verify changes.
                                 chai.request(server)
@@ -316,7 +316,7 @@ describe('Routes', function() {
             .field('title','Wills Awesome Item')
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -346,7 +346,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -366,6 +366,8 @@ describe('Routes', function() {
                                     .end(function (err, res) {
                                         // the image name is in the text segment and its named /images/item_id
                                         var image_name_index = res.text.indexOf('/images/'.concat(item_id));
+
+                                        // to do: Fix this
                                         //expect(image_name_index).to.not.equal(-1);
                                         done();
                                     });
@@ -386,7 +388,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -437,7 +439,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -494,6 +496,23 @@ describe('Routes', function() {
                                     });
                             });
                     });
+            });
+    });
+
+ // ============================================================================
+    // Test that the form doesn't accept an invalid condition
+    it('Does not accept an invalid condition', function(done){
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title','Davids Awesome Item')
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Invalid')
+            .end(function(err, res){
+                expect(res.statusCode).to.equal(200); //200 means it failed as expected (it reloads the page)
+                done();
             });
     });
 });
