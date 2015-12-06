@@ -3,11 +3,13 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var config = require('./config');
+var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var MongoStore = require('connect-mongo')(express);
 
+;
 var mongooseConnection = mongoose.connect(config.db.url, function(err) {
     if (err) {
         console.log('Could not connect to database', config.db.url, ' due to error', err);
@@ -31,6 +33,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.multipart());
 
+
 app.use(express.session({
     secret: config.sessionSecret,
     store: new MongoStore({
@@ -49,16 +52,12 @@ app.use(passport.session());
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.bodyParser());
 
-// Passport config.
+// passport config
 var Account = require('./models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-
-// TODO: figure out whether this is staying.
-//app.post("*", function(req, res){res.end(JSON.stringify(req.files)+ "\n");});
 
 // development only
 if ('development' == app.get('env')) {

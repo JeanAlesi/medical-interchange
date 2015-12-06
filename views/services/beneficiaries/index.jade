@@ -1,22 +1,9 @@
 extends ../../layout
 
 block content
-    div.left
-        h3 The Benefits of Becoming a Medical Interchange Beneficiary
-        p
-        p If your institution unable to afford certain medical equipment or supplies, you might be able to benefit from the products available for donation listed at the Medical Interchange platform.
-        p The first step is to sign up and create a beneficiary profile by submitting your information.
-        p
-        br
-        p
-        a.btn.btn-warning.pull-left(href="/") Home
-        br
-        p
-    div.right
-        if (!user)
-            a.login(href="/login") Login
-            br
-            a.register(href="/register") Register
-        if (user)
-            p You are currently logged in as #{user.username}
-            a.login(href="/logout") Logout
+    h1.display-data Beneficiaries Descriptions
+    mixin beneficiaries(name, description)
+        h4 #{name}
+        p #{description}
+    .form-actions
+        a.btn.btn-primary(href="/") Home

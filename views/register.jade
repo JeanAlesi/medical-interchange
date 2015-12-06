@@ -2,8 +2,8 @@ extends layout
 
 block content
   .container
-    h3 Register Page
-    p Enter a username and a password.
+    h1 Register Page
+    p.lead Say something worthwhile here.
     br
     form(role='form', action="/register",method="post", style='max-width: 300px;')
       .form-group
@@ -17,4 +17,4 @@ block content
       button.btn.btn-default(type='submit') Submit
       &nbsp;
       a(href='/')
-        button.btn.btn-warning(type="button") Cancel
+        button.btn.btn-primary(type="button") Cancel
