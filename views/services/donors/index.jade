@@ -1,9 +1,22 @@
 extends ../../layout
 
 block content
-    h1.display-data Donors Descriptions
-    mixin donors(name, description)
-        h4 #{name}
-        p #{description}
-    .form-actions
-        a.btn.btn-primary.pull-left(href="/") Home
+    div.left
+        h3 Becoming a Donor
+        p
+        p If you own a medical institution or participate in the decision-making and/or purchasing process of your organization, you might qualify to donate medical equipment using the Medical Interchange platform.
+        p The first step is to sign up and create a donor profile by submitting your information.
+        p
+        br
+        p
+        a.btn.btn-warning.pull-left(href="/") Home
+        br
+        p
+    div.right
+        if (!user)
+            a.login(href="/login") Login
+            br
+            a.register(href="/register") Register
+        if (user)
+            p You are currently logged in as #{user.username}
+            a.login(href="/logout") Logout
