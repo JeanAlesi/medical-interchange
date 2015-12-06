@@ -7,7 +7,7 @@ var Item = new Schema({
     description: { type: String, required: true },
     category: { type: String, required: true },
     condition: { type: String, enum: ItemConditions, required: true },
-    imageFileNames : {type: [String], required: false}
+    imageFileNames : {type: [String], required: false},
     user: { type: String, required: true }
 });
 

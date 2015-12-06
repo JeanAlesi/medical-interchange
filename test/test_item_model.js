@@ -116,9 +116,11 @@ describe("Item model", function(done) {
  // ============================================================================
 
     it("Accepts a correct enum value for condition", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:Item.ItemConditions[0]});
+        var item = new Item({title:"boo",description:"blah",category:"Machinery",
+                             condition:Item.ItemConditions[0], user:"Will"});
         Item.create(item, function (err, createdItem) {
-            // Confirm that an error does exist
+            // Confirm that an error does not exist
+            //console.log("err = ", err);
             assert.isNull(err);
             done();
         });
