@@ -10,6 +10,7 @@ block content
         th Title
         th Description
         th Category
+        th Donor
         th Condition
           a(href="/conditions/", title="Conditions")
             i.glyphicon.glyphicon-info-sign
@@ -23,6 +24,7 @@ block content
         td= display(item.title)
         td= display(item.description)
         td= display(item.category)
+        td= display(item.user)
         td= display(item.condition)
 
         td
