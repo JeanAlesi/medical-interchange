@@ -74,11 +74,10 @@ describe("Item model", function(done) {
         item.description = "the description";
         item.category = "the category";
         item.condition = "Used - Poor";
-        item.numfiles = 1;
         item.imageFileNames.push(fileName.toString());
 
         Item.create(item, function (err, createdItem) {
-            expect(item.imageFileNames[item.numfiles - 1]).to.equal(fileName.toString());
+            expect(item.imageFileNames[item.imageFileNames.length - 1]).to.equal(fileName.toString());
             done();
         });
     });
@@ -101,7 +100,6 @@ describe("Item model", function(done) {
         item.description = "the description";
         item.category = "the category";
         item.condition = "Used - Poor";
-        item.numfiles = 1;
 
         // create the item in the database
         Item.create(item, function (err, createdItem) {
@@ -117,17 +115,17 @@ describe("Item model", function(done) {
 
     it("Accepts a correct enum value for condition", function(done) {
         var item = new Item({title:"boo",description:"blah",category:"Machinery",
-                             condition:Item.ItemConditions[0], user:"Will"});
+                             condition:Item.ItemConditions[0], user:"Atlanta"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does not exist
-            //console.log("err = ", err);
             assert.isNull(err);
             done();
         });
     });
 
     it("Does not accept an invalid enum value for condition", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:"Invalid"});
+        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:"Invalid",
+                             user:"Charlotte"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -136,7 +134,8 @@ describe("Item model", function(done) {
     });
 
     it("Does not accept an invalid form of an enum value", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:Item.ItemConditions[0].toLowerCase()});
+        var item = new Item({title:"boo",description:"blah",category:"Machinery",
+                             condition:Item.ItemConditions[0].toLowerCase(), user:"Savannah"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
