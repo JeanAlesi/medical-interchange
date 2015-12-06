@@ -97,6 +97,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 chai.request(server)
                     .get('/items')
@@ -149,6 +150,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get item ID.
                 chai.request(server)
@@ -180,6 +182,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -211,6 +214,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -248,6 +252,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -280,6 +285,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -294,6 +300,7 @@ describe('Routes', function() {
                             .field('description','2005 Model Year')
                             .field('category','Hospital Equipment')
                             .field('condition','Used - Good')
+                            .field('user','bob')
                             .end(function(err, res) {
                                 // Verify changes.
                                 chai.request(server)
@@ -320,6 +327,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -350,6 +358,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -392,6 +401,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -443,6 +453,7 @@ describe('Routes', function() {
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
+            .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)

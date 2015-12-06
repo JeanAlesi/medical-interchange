@@ -67,6 +67,10 @@ module.exports = function(app) {
 
     app.post('/items/create', function(req, res) {
         var item = new Item(req.body);
+        item.user = 'NA'
+        if ('user' in req) {
+          item.user = req.user.username
+        }
 
         item.save(function(err) {
             if (err) {
