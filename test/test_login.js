@@ -58,7 +58,7 @@ describe('Login tests', function() {
 // ============================================================================
 
   // Register POST and verification for admins.
-  it('/register POST admin', function(done){
+  it('/register POST - admin', function(done){
     var unique_username = make_random_string(10);
     var unique_password =  make_random_string(10);
     chai.request(server)
@@ -76,7 +76,7 @@ describe('Login tests', function() {
 // ============================================================================
 
   // Register POST and verification for donors.
-  it('/register POST donor', function(done){
+  it('/register POST - donor', function(done){
     var unique_username = make_random_string(10);
     var unique_password =  make_random_string(10);
     chai.request(server)
@@ -93,8 +93,8 @@ describe('Login tests', function() {
 
 // ============================================================================
 
-  // Register POST and verification for beneficiary.
-  it('/register POST beneficiary', function(done){
+  // Register POST and verification for recipient.
+  it('/register POST - recipient', function(done){
     var unique_username = make_random_string(10);
     var unique_password =  make_random_string(10);
     chai.request(server)
@@ -124,8 +124,9 @@ describe('Login tests', function() {
 
 // ============================================================================
 
-  // Login POST and verification.
-  it('/login POST and verification', function(done){
+  // Login POST and verification - donor.
+  it('/login POST and verification - donor', function(done){
+    this.timeout(3000);
     var unique_username = make_random_string(10);
     var unique_password = make_random_string(10);
     // Create the user.
@@ -134,6 +135,7 @@ describe('Login tests', function() {
       .redirects(0)
       .field("username", unique_username)
       .field("password", unique_password)
+      .field("role", "Donor")
       .end(function (err, res) {
         // Verify the user is there and can login.
         chai.request(server)
@@ -150,8 +152,64 @@ describe('Login tests', function() {
 
 // ============================================================================
 
-  // Login POST with invalid credentials.
-  it('/login POST with invalid credentials', function(done){
+  // Login POST and verification - recipient.
+  it('/login POST and verification - recipient', function(done){
+    this.timeout(3000);
+    var unique_username = make_random_string(10);
+    var unique_password = make_random_string(10);
+    // Create the user.
+    chai.request(server)
+      .post('/register')
+      .redirects(0)
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Recipient")
+      .end(function (err, res) {
+        // Verify the user is there and can login.
+        chai.request(server)
+          .post('/login')
+          .field("username", unique_username)
+          .field("password", unique_password)
+          .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res).to.have.status(200);
+            done();
+          });
+      });
+  });
+
+// ============================================================================
+
+  // Login POST and verification - admin.
+  it('/login POST and verification - admin', function(done){
+    this.timeout(3000);
+    var unique_username = make_random_string(10);
+    var unique_password = make_random_string(10);
+    // Create the user.
+    chai.request(server)
+      .post('/register')
+      .redirects(0)
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Admin")
+      .end(function (err, res) {
+        // Verify the user is there and can login.
+        chai.request(server)
+          .post('/login')
+          .field("username", unique_username)
+          .field("password", unique_password)
+          .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res).to.have.status(200);
+            done();
+          });
+      });
+  });
+
+// ============================================================================
+
+  // Login POST with invalid credentials - admin.
+  it('/login POST with invalid credentials - admin', function(done){
     // Assuming that no other tests registered 11 char users.
     var unique_username = make_random_string(11);
     var unique_password = make_random_string(11);
@@ -159,6 +217,43 @@ describe('Login tests', function() {
       .post('/login')
       .field("username", unique_username)
       .field("password", unique_password)
+      .field("role", "Admin")
+      .end(function (err, res) {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+
+// ============================================================================
+
+  // Login POST with invalid credentials - donor.
+  it('/login POST with invalid credentials - donor', function(done){
+    // Assuming that no other tests registered 11 char users.
+    var unique_username = make_random_string(11);
+    var unique_password = make_random_string(11);
+    chai.request(server)
+      .post('/login')
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Donor")
+      .end(function (err, res) {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+
+// ============================================================================
+
+  // Login POST with invalid credentials - recipient.
+  it('/login POST with invalid credentials - recipient', function(done){
+    // Assuming that no other tests registered 11 char users.
+    var unique_username = make_random_string(11);
+    var unique_password = make_random_string(11);
+    chai.request(server)
+      .post('/login')
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Recipient")
       .end(function (err, res) {
         expect(res).to.have.status(401);
         done();
