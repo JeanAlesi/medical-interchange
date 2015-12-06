@@ -90,3 +90,45 @@ form .error {
 .lbl-body {
     width: 100%;
 }
+
+.left{
+    border: 1px solid #eee;
+    min-height: 300px;
+    width: 800px;
+    float: left;
+    padding: 2%;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.left p{
+    text-indent: 20px;
+}
+
+.register,
+.login{
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.register{
+    margin-top:10px;
+}

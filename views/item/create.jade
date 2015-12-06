@@ -9,17 +9,14 @@ block content
 
       .form-group
         mixin label("title", "Title")
-
         mixin text("title", item.title)
         mixin errorMessage(item, 'title')
       .form-group
         mixin label("description", "Description")
-
         mixin text("description", item.description)
         mixin errorMessage(item, 'description')
       .form-group
         mixin label("category", "Category")
-
         mixin text("category", item.category)
         mixin errorMessage(item, 'category')
       .form-group

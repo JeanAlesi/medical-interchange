@@ -1,14 +1,16 @@
 extends layout
 
 block content
-  if (!user)
-    a(href="/login") Login
-    br
-    a(href="/register") Register
-  if (user)
-    p
-      |  You are currently logged in as
-      b  #{user.username}
-      |  with a role of
-      b  #{user.role}
-    a(href="/logout") Logout
+
+  div.left
+    img(src= "/img/rec.png")
+    p Medical Interchange is a place to provide medical institutions in need with cost free medical resources, such medical devices, general medical equipment and tests. At Medical Interchange donors can sign up to donate items and claim tax credit for their donations. At the same time, beneficiaries may take advantage of the site's platform to communicate with donors and arrange overseas transactions in order to fulfill their needs.
+
+  div.right
+    if (!user)
+      a.login(href="/login") Login
+      br
+      a.register(href="/register") Register
+    if (user)
+      p You are currently logged in as #{user.username} (#{user.role})
+      a.login(href="/logout") Logout
