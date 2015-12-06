@@ -1,12 +1,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
+var Roles = ["Donor", "Recipient", "Admin"];
 
 var Account = new Schema({
     username: String,
-    password: String
+    password: String,
+    role: String
 });
 
 Account.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Account', Account);
+var AccountModel = mongoose.model('Account', Account);
+AccountModel.Roles = Roles;
+module.exports = AccountModel;
