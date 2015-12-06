@@ -57,15 +57,52 @@ describe('Login tests', function() {
 
 // ============================================================================
 
-  // Register POST and verification.
-  it('/register POST', function(done){
+  // Register POST and verification for admins.
+  it('/register POST admin', function(done){
     var unique_username = make_random_string(10);
     var unique_password =  make_random_string(10);
     chai.request(server)
-      .redirects(0)
       .post('/register')
+      .redirects(0)
       .field("username", unique_username)
       .field("password", unique_password)
+      .field("role", "Admin")
+      .end(function (err, res) {
+        expect(res).to.redirectTo('/');
+        done();
+      });
+  });
+
+// ============================================================================
+
+  // Register POST and verification for donors.
+  it('/register POST donor', function(done){
+    var unique_username = make_random_string(10);
+    var unique_password =  make_random_string(10);
+    chai.request(server)
+      .post('/register')
+      .redirects(0)
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Donor")
+      .end(function (err, res) {
+        expect(res).to.redirectTo('/');
+        done();
+      });
+  });
+
+// ============================================================================
+
+  // Register POST and verification for beneficiary.
+  it('/register POST beneficiary', function(done){
+    var unique_username = make_random_string(10);
+    var unique_password =  make_random_string(10);
+    chai.request(server)
+      .post('/register')
+      .redirects(0)
+      .field("username", unique_username)
+      .field("password", unique_password)
+      .field("role", "Recipient")
       .end(function (err, res) {
         expect(res).to.redirectTo('/');
         done();
