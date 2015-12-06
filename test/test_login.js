@@ -62,8 +62,8 @@ describe('Login tests', function() {
     var unique_username = make_random_string(10);
     var unique_password =  make_random_string(10);
     chai.request(server)
-      .post('/register')
       .redirects(0)
+      .post('/register')
       .field("username", unique_username)
       .field("password", unique_password)
       .end(function (err, res) {
