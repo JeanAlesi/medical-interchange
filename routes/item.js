@@ -5,6 +5,11 @@ var Item = require('../models/item'),
     mongoose = require("mongoose");
 
 ///////////////////////////////////////////////////////////////////////////////
+// constants
+///////////////////////////////////////////////////////////////////////////////
+const MAX_NUM_IMAGES = 4;
+
+///////////////////////////////////////////////////////////////////////////////
 // Helper functions
 function deleteImage(req){
     // Find the item in the database
@@ -13,22 +18,29 @@ function deleteImage(req){
             console.error("Error finding item", err);
         }
         else{
-            // check if this image has an associated image file
-            if (item.imageFileNames.length > 0)
-            {
+            // check if an image exists for this item
+            if (item.imageIndex === undefined) {
+                console.log("Creating an imageIndex");
+                // an image has never been uploaded, create the image
+                // index variable
+                item.imageIndex = 0;
+                // synchronously save the item to the database
+                item.save();
+            }
+            else {
+                // construct the image full path name
+                var imageFullPathName = path.join(__dirname, "../public/images",
+                                                  item.imageFileNames[item.imageIndex]);
                 // delete the image file from the disk
-                var imageFullPathName = path.join(__dirname, "../public/images", item.imageFileNames[0]);
                 fs.unlink(imageFullPathName, function(err){
                     if (err){
                         // We always seem to get an ENOENT error but the file was successfully deleted.
-                        // console.log("Error in call to fs.unlink", err);
+                        console.log("Error in call to fs.unlink", err);
                     }
                 });
 
                 // Remove the image file name from the database
-                while (item.imageFileNames.length > 0){
-                    item.imageFileNames.pop();
-                }
+                item.imageFileNames.splice(item.imageIndex, 1);
 
                 // synchronously save the item to the database
                 item.save();
@@ -103,8 +115,6 @@ module.exports = function(app) {
     });
 
     app.post('/items/:itemId/uploadimage',function(req,res) {
-        // to do: handle error conditions
-
         // delete the existing image from the disk
         deleteImage(req);
 
@@ -121,12 +131,18 @@ module.exports = function(app) {
                     // Find the item in the database
                     Item.findById(res.locals.item._id, function(err, item) {
                         if (err) {
-                            //console.error("Error finding item", err);
+                            console.error("Error finding item", err);
                             res.redirect('back');
                         }
                         else{
                             // Add the image file name to the database
-                            item.imageFileNames.push(fileName);
+                            // at the next image index
+                            item.imageFileNames.splice(item.imageIndex, 0, fileName);
+                            console.log("item.imageFileNames = ", item.imageFileNames);
+
+                            // Advance the image index to the next position
+                            item.imageIndex = (item.imageIndex + 1) % MAX_NUM_IMAGES;
+                            console.log("item.imageIndex = ", item.imageIndex);
 
                             // save the item to the database
                             item.save(function(err){

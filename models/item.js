@@ -8,7 +8,8 @@ var Item = new Schema({
     category: { type: String, required: true },
     condition: { type: String, enum: ItemConditions, required: true },
     imageFileNames : {type: [String], required: false},
-    user: { type: String, required: true }
+    user: { type: String, required: true },
+    imageIndex: {type: Number, required: false}
 });
 
 var ItemModel = mongoose.model('Item', Item);
