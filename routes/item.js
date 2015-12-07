@@ -7,15 +7,15 @@ var Item = require('../models/item'),
 ////////////////////////////////////////////////////////////////////////////////
 // constants
 ///////////////////////////////////////////////////////////////////////////////
-const MAX_NUM_IMAGES = 4;
+const MAX_NUM_IMAGES = 6;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Helper functions
 
 function checkAuth(req,res) {
-  if(!req.isAuthenticated() && req.headers['test']!="true") {
-    res.redirect('/login');
-  }
+    if(!req.isAuthenticated() && req.headers['test']!="true") {
+        res.redirect('/login');
+    }
 }
 
 module.exports = function(app) {
@@ -46,7 +46,7 @@ module.exports = function(app) {
         var item = new Item(req.body);
         item.user = 'NA'
         if ('user' in req) {
-          item.user = req.user.username
+            item.user = req.user.username
         }
 
         item.save(function(err) {
@@ -90,35 +90,33 @@ module.exports = function(app) {
                 res.redirect('back');
             }
             else{
-                    // Find the item in the database
-                    Item.findById(res.locals.item._id, function(err, item) {
-                        if (err) {
-                            //console.error("Error finding item", err);
-                            res.redirect('back');
-                        }
-                        else{
+                // Find the item in the database
+                Item.findById(res.locals.item._id, function(err, item) {
+                    if (err) {
+                        //console.error("Error finding item", err);
+                        res.redirect('back');
+                    }
+                    else{
                         if (item.imageFileNames.length < MAX_NUM_IMAGES) {
-                            // write the uploaded file to the /public/images directory
+                            // write the uploaded file to the
+                            // /public/images directory
                             var fileName = mongoose.Types.ObjectId().toString();
-                            var imageFullPathName = __dirname + "/../public/images/" + fileName;
+                            var imageFullPathName =
+                                __dirname + "/../public/images/" + fileName;
                             fs.writeFile(imageFullPathName, fileData, function (err) {
-                            // Add the image file name to the database
-                            item.imageFileNames.push(fileName);
 
-                            // save the item to the database
-                            item.save(function(err){
-                                if (err){
-                                    console.error("Error saving item", err);
-                                }
-                                    res.redirect('back');
-                                });
+                                // Add the image file name to the database
+                                item.imageFileNames.push(fileName);
+
+                                // synchronously save the item to the database
+                                item.save();
+                                res.redirect('back');
                             });
                         }
                         else {
                             res.redirect('back');
                         }
                     }
-
                 });
             }
         });
@@ -147,8 +145,9 @@ module.exports = function(app) {
                     while (item.imageFileNames.length > 0)
                     {
                         // delete the image file from the disk
-                        var imageFullPathName = path.join(__dirname, "../public/images",
-                                                          item.imageFileNames[0]);
+                        var imageFullPathName =
+                            path.join(__dirname, "../public/images",
+                                      item.imageFileNames[0]);
                         fs.unlink(imageFullPathName, function(err) {
                             if (err) {
                                 console.error("Unlink error: ", err);
