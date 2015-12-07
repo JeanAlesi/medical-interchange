@@ -19,7 +19,8 @@ function checkAuth(req,res) {
 }
 
 module.exports = function(app) {
-
+    // ============================================================================
+    // route handler
     app.param('itemId', function(req, res, next, id) {
         Item.findById(id, function(err, item) {
             if (err) {
@@ -31,17 +32,23 @@ module.exports = function(app) {
         });
     });
 
+    // ============================================================================
+    // GET /items
     app.get('/items', function(req, res) {
         Item.find({}, function(err, items) {
             res.render('item/index', { items : items });
         });
     });
 
+    // ============================================================================
+    // GET /create
     app.get('/items/create', function(req, res) {
         checkAuth(req,res)
         res.render('item/create', { item : new Item(), itemConditions : Item.ItemConditions });
     });
 
+    // ============================================================================
+    // POST /create
     app.post('/items/create', function(req, res) {
         var item = new Item(req.body);
         item.user = 'NA'
@@ -61,11 +68,15 @@ module.exports = function(app) {
         });
     });
 
+    // ============================================================================
+    // GET /edit
     app.get('/items/:itemId/edit', function(req, res) {
         checkAuth(req,res)
         res.render('item/edit', { itemConditions : Item.ItemConditions });
     });
 
+    // ============================================================================
+    // POST /edit
     app.post('/items/:itemId/edit', function(req, res) {
         mapper.map(req.body).to(res.locals.item);
         var itemId = req.params.itemId;
@@ -79,10 +90,14 @@ module.exports = function(app) {
         });
     });
 
+    // ============================================================================
+    // GET /uploadimage
     app.get('/items/:itemId/uploadimage',function(req,res) {
         res.render('item/image_upload');
     });
 
+    // ============================================================================
+    // POST /uploadimage
     app.post('/items/:itemId/uploadimage',function(req,res) {
         // read the uploaded file data
         fs.readFile(req.files.displayImage.path, function (err, fileData) {
@@ -122,15 +137,21 @@ module.exports = function(app) {
         });
     });
 
+    // ============================================================================
+    // GET /detail
     app.get('/items/:itemId/detail', function(req, res) {
         res.render('item/detail');
     });
 
+    // ============================================================================
+    // GET /delete
     app.get('/items/:itemId/delete', function(req, res) {
         checkAuth(req,res)
         res.render('item/delete');
     });
 
+    // ============================================================================
+    // POST /delete
     app.post('/items/:itemId/delete', function(req, res) {
         try
         {
@@ -171,6 +192,8 @@ module.exports = function(app) {
         }
     });
 
+    // ============================================================================
+    // POST /deleteimage
     app.post('/items/:itemId/deleteimage', function(req, res) {
         // Find the item in the database
         Item.findById(req.params.itemId, function(err, item) {
@@ -203,6 +226,7 @@ module.exports = function(app) {
     });
 }
 
+// ============================================================================
 // Used to build the index page. Can be safely removed!
 module.exports.meta = {
     name : 'Item',
