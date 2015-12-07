@@ -30,12 +30,8 @@ function deleteImage(req){
                     item.imageFileNames.pop();
                 }
 
-                // save the item to the database
-                item.save(function(err){
-                    if (err){
-                        console.error("Error saving item", err);
-                    }
-                });
+                // synchronously save the item to the database
+                item.save();
             }
         }
     });

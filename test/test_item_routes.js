@@ -347,49 +347,6 @@ describe('Routes', function() {
 
     // ============================================================================
 
-    // Test item upload image POST
-    it('Test item upload image POST', function(done){
-        // create the item
-        var unique_name = 'ITEM_UPLOAD_IMAGE';
-        chai.request(server)
-            .post('/items/create')
-            .redirects(0)
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used - Good')
-            .field('user','bob')
-            .end(function(err, res){
-                // Get the item ID.
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        item_id = getItemIDFromResponse(res);
-                        // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
-                        chai.request(server)
-                            .post('/items/'.concat(item_id,'/uploadimage'))
-                            .redirects(0)
-                            .attach('displayImage', image_name)
-                            .end(function(err, res) {
-                                // Verify that the uploaded image is included in the response
-                                chai.request(server)
-                                    .get('/items')
-                                    .end(function (err, res) {
-                                        // the image name is in the text segment and its named /images/item_id
-                                        var image_name_index = res.text.indexOf('/images/'.concat(item_id));
-
-                                        // to do: Fix this
-                                        //expect(image_name_index).to.not.equal(-1);
-                                        done();
-                                    });
-                            });
-                    });
-            });
-    });
-
-    // ============================================================================
-
     // Test Delete an item which includes an uploaded image
     it('Test Delete an item which includes an uploaded image', function(done){
         // create the item
