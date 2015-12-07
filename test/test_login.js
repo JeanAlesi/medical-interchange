@@ -126,7 +126,7 @@ describe('Login tests', function() {
 
   // Login POST and verification - donor.
   it('/login POST and verification - donor', function(done){
-    this.timeout(3000);
+    this.timeout(10000);
     var unique_username = make_random_string(10);
     var unique_password = make_random_string(10);
     // Create the user.
@@ -154,7 +154,7 @@ describe('Login tests', function() {
 
   // Login POST and verification - recipient.
   it('/login POST and verification - recipient', function(done){
-    this.timeout(3000);
+    this.timeout(10000);
     var unique_username = make_random_string(10);
     var unique_password = make_random_string(10);
     // Create the user.
@@ -182,7 +182,7 @@ describe('Login tests', function() {
 
   // Login POST and verification - admin.
   it('/login POST and verification - admin', function(done){
-    this.timeout(3000);
+    this.timeout(10000);
     var unique_username = make_random_string(10);
     var unique_password = make_random_string(10);
     // Create the user.
