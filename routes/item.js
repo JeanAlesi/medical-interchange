@@ -36,6 +36,24 @@ module.exports = function(app) {
         });
     });
 
+
+    //PS added search functionality
+
+    app.get('/items/search', function(req, res) {
+        res.render('item/search', { item : new Item(), itemConditions : Item.ItemConditions });
+    });
+
+    app.post('/items/search', function(req, res) {
+        var srch = req.param('title', null);
+         //Item.find({'title': srch}, function(err, items) {
+        Item.find({$or:[{'title': { $regex: srch , $options: 'i'}},
+                        {'description': { $regex: srch , $options: 'i'}},
+                        {'category': { $regex: srch , $options: 'i'}} ]}, function(err, items) {
+            res.render('item/searchresults', { items : items });
+        });
+    });
+
+
     app.get('/items/create', function(req, res) {
         checkAuth(req,res)
         res.render('item/create', { item : new Item(), itemConditions : Item.ItemConditions });
