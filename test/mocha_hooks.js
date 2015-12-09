@@ -10,19 +10,16 @@ function deleteAllDatabaseItems()
 }
 
 before(function (done) {
-    console.log("before");
     deleteAllDatabaseItems();
     return done();
 });
 
 after(function (done) {
-    console.log("after");
     deleteAllDatabaseItems();
     return done();
 });
 
 afterEach(function(done) {
-    console.log("afterEach");
     deleteAllDatabaseItems();
     return done();
 });
