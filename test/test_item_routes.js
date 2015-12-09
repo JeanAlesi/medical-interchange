@@ -44,20 +44,6 @@ function sleep(time) {
 // ============================================================================
 // Tests
 // ============================================================================
-before(function (done) {
-    deleteAllDatabaseItems();
-    return done();
-});
-
-after(function (done) {
-    deleteAllDatabaseItems();
-    return done();
-});
-
-afterEach(function(done) {
-    deleteAllDatabaseItems();
-    return done();
-});
 
 describe('Routes', function() {
     // /items GET
@@ -496,6 +482,37 @@ describe('Routes', function() {
                                             });
                                     });
                             });
+                    });
+            });
+    });
+
+    // ============================================================================
+
+    // Test item search POST
+    it('Test item search POST', function(done){
+        // create the item
+        var unique_name = 'ITEM_SEARCH';
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used')
+            .field('user','bob')
+            .end(function(err, res){
+                // search for the item
+                chai.request(server)
+                    .post('/items/search')
+                    .redirects(0)
+                    .field('title',unique_name)
+                    .end(function(err, res) {
+                        // verify that the search was successful
+                        res.should.have.status(200);
+                        var image_name_index = res.text.indexOf(unique_name);
+                        expect(image_name_index).to.not.equal(-1);
+                        //console.log(res);
+                        done();
                     });
             });
     });
