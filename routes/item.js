@@ -36,13 +36,6 @@ module.exports = function(app) {
         });
     });
 
-
-    //PS added search functionality
-
-    app.get('/items/search', function(req, res) {
-        res.render('item/search', { item : new Item(), itemConditions : Item.ItemConditions });
-    });
-
     app.post('/items/search', function(req, res) {
         var srch = req.param('title', null);
          //Item.find({'title': srch}, function(err, items) {
@@ -52,7 +45,6 @@ module.exports = function(app) {
             res.render('item/searchresults', { items : items });
         });
     });
-
 
     app.get('/items/create', function(req, res) {
         checkAuth(req,res)
