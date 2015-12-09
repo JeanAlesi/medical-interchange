@@ -13,7 +13,8 @@ describe("Item model", function(done) {
     // ============================================================================
 
     it("Add empty title", function(done) {
-        var item = new Item({description:"boo",category:"Machinery",condition:"New"});
+        var item = new Item({description:"boo",category:"Machinery",
+                             condition:"New", user:"Atlanta"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -24,7 +25,8 @@ describe("Item model", function(done) {
     // ============================================================================
 
     it("Add empty description", function(done) {
-        var item = new Item({title:"boo",category:"Machinery",condition:"Used - Great"});
+        var item = new Item({title:"boo",category:"Machinery",
+                             condition:"Used - Great", user:"Atlanta"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -35,7 +37,8 @@ describe("Item model", function(done) {
     // ============================================================================
 
     it("Add empty category", function(done) {
-        var item = new Item({title:"boo",description:"blah",condition:"Used - Great"});
+        var item = new Item({title:"boo",description:"blah",
+                             condition:"Used - Great", user:"Atlanta"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -46,7 +49,8 @@ describe("Item model", function(done) {
     // ============================================================================
 
     it("Add empty condition", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery"});
+        var item = new Item({title:"boo",description:"blah",
+                             category:"Machinery", user:"Atlanta"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -56,12 +60,25 @@ describe("Item model", function(done) {
 
     // ============================================================================
 
-    // to do: Change this test to accomodate the to be defined condition enumeration
+    it("Add empty user", function(done) {
+        var item = new Item({title:"boo",description:"blah",
+                             condition:"Used - Great",
+                             category:"Machinery"});
+        Item.create(item, function (err, createdItem) {
+            // Confirm that an error does exist
+            expect(err).to.exist;
+            done();
+        });
+    });
+
+    // ============================================================================
+
     it("Check item condition exists", function(done) {
-        var item = new Item({title:"yo",description:"boo",category:"Machinery",condition:"Used - Great"});
+        var item = new Item({title:"yo",description:"boo",
+                             category:"Machinery",condition:"Used - Great",
+                             user:"Atlanta"});
         expect(item.condition).to.equal("Used - Great");
         done();
-        // to do: Add Item.create to test that the database accepts the item
     });
 
     // ============================================================================
@@ -75,9 +92,11 @@ describe("Item model", function(done) {
         item.category = "the category";
         item.condition = "Used - Poor";
         item.imageFileNames.push(fileName.toString());
+        item.user = "Savannah";
 
         Item.create(item, function (err, createdItem) {
-            expect(item.imageFileNames[item.imageFileNames.length - 1]).to.equal(fileName.toString());
+            expect(item.imageFileNames[item.imageFileNames.length - 1]).
+                to.equal(fileName.toString());
             done();
         });
     });
@@ -100,6 +119,7 @@ describe("Item model", function(done) {
         item.description = "the description";
         item.category = "the category";
         item.condition = "Used - Poor";
+        item.user = "Savannah";
 
         // create the item in the database
         Item.create(item, function (err, createdItem) {
@@ -124,7 +144,8 @@ describe("Item model", function(done) {
     });
 
     it("Does not accept an invalid enum value for condition", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery", condition:"Invalid",
+        var item = new Item({title:"boo",description:"blah",
+                             category:"Machinery", condition:"Invalid",
                              user:"Charlotte"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
@@ -134,8 +155,10 @@ describe("Item model", function(done) {
     });
 
     it("Does not accept an invalid form of an enum value", function(done) {
-        var item = new Item({title:"boo",description:"blah",category:"Machinery",
-                             condition:Item.ItemConditions[0].toLowerCase(), user:"Savannah"});
+        var item = new Item({title:"boo",description:"blah",
+                             category:"Machinery",
+                             condition:Item.ItemConditions[0].toLowerCase(),
+                             user:"Savannah"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
