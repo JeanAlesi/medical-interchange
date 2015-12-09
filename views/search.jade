@@ -1,0 +1,17 @@
+//
+   Created by ponnusamy on 12/7/2015.
+
+//PS Added  Search page
+extends layout
+include ./mixins/form-helpers
+block content
+   form#search-form(action="/items/search", method="POST")
+      h1.display-data Search Listings
+         a(href="/items/index", title="Search")&nbsp;
+         i.glyphicon.glyphicon-search
+      .form-groupit
+         mixin label("search", "Enter full or partial description, title or category of the items you are looking for..")
+         mixin text("title", title)
+         br
+      .form-actions
+         input.btn.btn-primary(type="submit", value="Search")

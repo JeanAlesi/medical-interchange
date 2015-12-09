@@ -41,6 +41,18 @@ module.exports = function(app) {
     });
 
     // ============================================================================
+    // GET /items/search
+    app.post('/items/search', function(req, res) {
+        var srch = req.param('title', null);
+         //Item.find({'title': srch}, function(err, items) {
+        Item.find({$or:[{'title': { $regex: srch , $options: 'i'}},
+                        {'description': { $regex: srch , $options: 'i'}},
+                        {'category': { $regex: srch , $options: 'i'}} ]}, function(err, items) {
+            res.render('item/searchresults', { items : items });
+        });
+    });
+
+    // ============================================================================
     // GET /create
     app.get('/items/create', function(req, res) {
         checkAuth(req,res)
@@ -225,10 +237,3 @@ module.exports = function(app) {
         });
     });
 }
-
-// ============================================================================
-// Used to build the index page. Can be safely removed!
-module.exports.meta = {
-    name : 'Item',
-    route : '/items'
-};
