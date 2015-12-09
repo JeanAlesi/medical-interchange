@@ -165,6 +165,4 @@ describe("Item model", function(done) {
             done();
         });
     });
-
-
 });
