@@ -2,17 +2,23 @@ extends ../layout
 include ../mixins/form-helpers
 
 block content
-  img(src='/images/' + item.imageFileNames[0] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[1] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[2] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  br
-  img(src='/images/' + item.imageFileNames[3] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[4] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[5] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+  -if (item.imageFileNames[0] != null)
+   img(src='/images/' + item.imageFileNames[0] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+   = ' '
+  -if (item.imageFileNames[1] != null)
+   img(src='/images/' + item.imageFileNames[1] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+   = ' '
+  -if (item.imageFileNames[2] != null)
+   img(src='/images/' + item.imageFileNames[2] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+   br
+  -if (item.imageFileNames[3] != null)
+   img(src='/images/' + item.imageFileNames[3] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+   = ' '
+  -if (item.imageFileNames[4] != null)
+   img(src='/images/' + item.imageFileNames[4] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
+   = ' '
+  -if (item.imageFileNames[5] != null)
+   img(src='/images/' + item.imageFileNames[5] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
   form#item-form(action="/items/" + item._id + "/edit", method="POST", role="form")
     fieldset
       legend Image Upload
