@@ -26,6 +26,7 @@ block content
          th Condition
             a(href="/conditions/", title="Conditions")
                i.glyphicon.glyphicon-info-sign
+         th Location
          th
       each item in items
          tr
@@ -34,6 +35,7 @@ block content
             td= display(item.description)
             td= display(item.category)
             td= display(item.condition)
+            td= display(item.location)
             td
                a(href="/items/" + item._id + "/detail", title="Detail")
                   i.glyphicon.glyphicon-search
