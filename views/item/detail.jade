@@ -13,7 +13,7 @@ block content
   img(src='/images/' + item.imageFileNames[4] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
   = ' '
   img(src='/images/' + item.imageFileNames[5] width="250" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=250;this.height=auto;")
-  table.table.table-bordered
+  table(style="width:68%; float:left").table.table-bordered
     tr
       th Property
       th Value
@@ -35,9 +35,9 @@ block content
           td Location
           td#location= display(item.location)
 
-  #map(style='width: 350px; height: 200px; background: grey')
+  #map(style='width: 300px; height: 223px; background: grey; float:right')
 
-  .form-actions
+  .form-actions(style="margin-top: 5%; clear: left")
     a.btn.btn-warning(href="/items") Back
     |
     a.btn.btn-primary(href="/items/" + item._id + "/edit") Edit
@@ -70,9 +70,9 @@ block content
 
 
     /**
-    * This will get the lat lng coordinates for a given address
-    * @param {String} location    -Location to geocode
-    */
+     * This will get the lat lng coordinates for a given address
+     * @param {String} location    -Location to geocode
+     */
     function markItemLocationXHR(address) {
       console.log('here');
       if (!!address) {
