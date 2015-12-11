@@ -44,22 +44,10 @@ function sleep(time) {
 // ============================================================================
 // Tests
 // ============================================================================
-before(function (done) {
-    deleteAllDatabaseItems();
-    return done();
-});
 
-after(function (done) {
-    deleteAllDatabaseItems();
-    return done();
-});
+describe('Routes', function(done) {
+    // ============================================================================
 
-afterEach(function(done) {
-    deleteAllDatabaseItems();
-    return done();
-});
-
-describe('Routes', function() {
     // /items GET
     it('/items GET', function(done){
         chai.request(server)
@@ -96,7 +84,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 chai.request(server)
@@ -149,7 +137,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get item ID.
@@ -181,7 +169,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -213,7 +201,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -251,7 +239,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -284,7 +272,7 @@ describe('Routes', function() {
             .field('title',unique_name_before)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -299,7 +287,7 @@ describe('Routes', function() {
                             .field('title', unique_name_after)
                             .field('description','2005 Model Year')
                             .field('category','Hospital Equipment')
-                            .field('condition','Used')
+                            .field('condition','Used - Good')
                             .field('user','bob')
                             .end(function(err, res) {
                                 // Verify changes.
@@ -326,7 +314,7 @@ describe('Routes', function() {
             .field('title','Wills Awesome Item')
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -347,47 +335,6 @@ describe('Routes', function() {
 
     // ============================================================================
 
-    // Test item upload image POST
-    it('Test item upload image POST', function(done){
-        // create the item
-        var unique_name = 'ITEM_UPLOAD_IMAGE';
-        chai.request(server)
-            .post('/items/create')
-            .redirects(0)
-            .field('title',unique_name)
-            .field('description','2005 Model Year')
-            .field('category','Hospital Equipment')
-            .field('condition','Used')
-            .field('user','bob')
-            .end(function(err, res){
-                // Get the item ID.
-                chai.request(server)
-                    .get('/items')
-                    .end(function (err, res) {
-                        item_id = getItemIDFromResponse(res);
-                        // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
-                        chai.request(server)
-                            .post('/items/'.concat(item_id,'/uploadimage'))
-                            .redirects(0)
-                            .attach('displayImage', image_name)
-                            .end(function(err, res) {
-                                // Verify that the uploaded image is included in the response
-                                chai.request(server)
-                                    .get('/items')
-                                    .end(function (err, res) {
-                                        // the image name is in the text segment and its named /images/item_id
-                                        var image_name_index = res.text.indexOf('/images/'.concat(item_id));
-                                        expect(image_name_index).to.not.equal(-1);
-                                        done();
-                                    });
-                            });
-                    });
-            });
-    });
-
-    // ============================================================================
-
     // Test Delete an item which includes an uploaded image
     it('Test Delete an item which includes an uploaded image', function(done){
         // create the item
@@ -398,7 +345,7 @@ describe('Routes', function() {
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -442,13 +389,15 @@ describe('Routes', function() {
     it('Test deleteimage route', function(done){
         // create the item
         var unique_name = 'ITEM_DELETE_IMAGE_ROUTE';
+        var imageDirName = '/images/';
+        const idLength = 24;
         chai.request(server)
             .post('/items/create')
             .redirects(0)
             .field('title',unique_name)
             .field('description','2005 Model Year')
             .field('category','Hospital Equipment')
-            .field('condition','Used')
+            .field('condition','Used - Good')
             .field('user','bob')
             .end(function(err, res){
                 // Get the item ID.
@@ -468,8 +417,19 @@ describe('Routes', function() {
                                     .get('/items')
                                     .end(function (err, res) {
                                         // the image name is in the text segment and its named /images/item_id
-                                        var image_name_index = res.text.indexOf('/images/'.concat(item_id));
-                                        expect(image_name_index).to.not.equal(-1);
+                                        //console.log("res = ", res);
+                                        var image_name_index = res.text.indexOf(imageDirName);
+                                        var image_name_index = image_name_index + imageDirName.length;
+                                        var imageName = res.text.substring(image_name_index, image_name_index + idLength);
+                                        //console.log("imageName = ", imageName);
+                                        // verify that the image file exists
+                                        var imageFullPathName = __dirname + "/../public/images/" + imageName;
+                                        var normalizedPathName = path.normalize(imageFullPathName);
+                                        fs.exists(normalizedPathName, function(exists){
+                                            if (!exists){
+                                                assert(false);
+                                            }
+                                        });
 
                                         // Now delete the item to exercise the route code which deletes
                                         // the image associated with an item.
@@ -484,8 +444,6 @@ describe('Routes', function() {
                                                     .end(function (err, res) {
                                                         res.should.have.status(200);
                                                         // verify that the image file was actually deleted
-                                                        var imageFullPathName = __dirname + "/../public/images/" + item_id;
-                                                        var normalizedPathName = path.normalize(imageFullPathName);
                                                         fs.exists(normalizedPathName, function(exists){
                                                             if (exists){
                                                                 assert(false);
@@ -496,6 +454,55 @@ describe('Routes', function() {
                                             });
                                     });
                             });
+                    });
+            });
+    });
+
+ // ============================================================================
+    // Test that the form doesn't accept an invalid condition
+    it('Does not accept an invalid condition', function(done){
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title','Davids Awesome Item')
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Invalid')
+            .field('user','bob')
+            .end(function(err, res){
+                expect(res.statusCode).to.equal(200); //200 means it failed as expected (it reloads the page)
+                done();
+            });
+    });
+
+    // ============================================================================
+
+    // Test item search POST
+    it('Test item search POST', function(done){
+        // create the item
+        var unique_name = 'ITEM_SEARCH';
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used - Good')
+            .field('user','bob')
+            .end(function(err, res){
+                // search for the item
+                chai.request(server)
+                    .post('/items/search')
+                    .redirects(0)
+                    .field('title',unique_name)
+                    .end(function(err, res) {
+                        // verify that the search was successful
+                        //console.log(res);
+                        res.should.have.status(200);
+                        var image_name_index = res.text.indexOf(unique_name);
+                        expect(image_name_index).to.not.equal(-1);
+                        done();
                     });
             });
     });

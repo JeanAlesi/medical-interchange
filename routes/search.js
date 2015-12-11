@@ -7,9 +7,3 @@ module.exports = function (app) {
         res.render('search');
     });
 };
-
-//Used to build the index page. Can be safely removed!
-module.exports.meta = {
-    name: 'Search',
-    route: '/search'
-}
