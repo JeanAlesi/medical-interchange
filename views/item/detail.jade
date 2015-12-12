@@ -2,35 +2,42 @@ extends ../layout
 
 block content
   h2.display-data Item Detail
-  img(src='/images/' + item.imageFileNames[0] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[1] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[2] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  br
-  img(src='/images/' + item.imageFileNames[3] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[4] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  = ' '
-  img(src='/images/' + item.imageFileNames[5] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
-  table.table.table-bordered
-    tr
-      th Property
-      th Value
-        tr
-          td Title
-          td= display(item.title)
-        tr
-          td Description
-          td= display(item.description)
-        tr
-          td Category
-          td= display(item.category)
-        tr
-          td Condition
-            a(href="/conditions/", target="_blank", title="Conditions")
-              i.glyphicon.glyphicon-info-sign
-          td= display(item.condition)
+
+  -if (item.imageFileNames[0] != null)
+     img(src='/images/' + item.imageFileNames[0] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+     = ' '
+  -if (item.imageFileNames[1] != null)
+     img(src='/images/' + item.imageFileNames[1] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+     = ' '
+  -if (item.imageFileNames[2] != null)
+     img(src='/images/' + item.imageFileNames[2] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+     br
+  -if (item.imageFileNames[3] != null)
+     img(src='/images/' + item.imageFileNames[3] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+     = ' '
+  -if (item.imageFileNames[4] != null)
+     img(src='/images/' + item.imageFileNames[4] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+     = ' '
+  -if (item.imageFileNames[5] != null)
+     img(src='/images/' + item.imageFileNames[5] width="250" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=250;this.height=auto;")
+    table.table.table-bordered
+      tr
+        th Property
+        th Value
+          tr
+            td Title
+            td= display(item.title)
+          tr
+            td Description
+            td= display(item.description)
+          tr
+            td Category
+            td= display(item.category)
+          tr
+            td Condition
+              a(href="/conditions/", target="_blank", title="Conditions")
+                i.glyphicon.glyphicon-info-sign
+            td= display(item.condition)
 
   .form-actions
     a.btn.btn-warning(href="/items") Back
