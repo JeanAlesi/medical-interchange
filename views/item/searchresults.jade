@@ -29,7 +29,7 @@ block content
          th
       each item in items
          tr
-            td: img(src='/images/' + item.imageFileNames[0] width="100" height="auto" onerror="this.onerror=null;this.src='/imag/slug.png';this.width=50;this.height=50;")
+            td: img(src='/images/' + item.imageFileNames[0] width="100" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=50;this.height=50;")
             td= display(item.title)
             td= display(item.description)
             td= display(item.category)
