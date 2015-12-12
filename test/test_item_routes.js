@@ -354,7 +354,7 @@ describe('Routes', function(done) {
                     .end(function (err, res) {
                         item_id = getItemIDFromResponse(res);
                         // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
+                        var image_name = __dirname + '/../public/img/P1000788.jpg';
                         chai.request(server)
                             .post('/items/'.concat(item_id,'/uploadimage'))
                             .redirects(0)
@@ -406,7 +406,7 @@ describe('Routes', function(done) {
                     .end(function (err, res) {
                         item_id = getItemIDFromResponse(res);
                         // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
+                        var image_name = __dirname + '/../public/img/P1000788.jpg';
                         chai.request(server)
                             .post('/items/'.concat(item_id,'/uploadimage'))
                             .redirects(0)
@@ -416,7 +416,7 @@ describe('Routes', function(done) {
                                 chai.request(server)
                                     .get('/items')
                                     .end(function (err, res) {
-                                        // the image name is in the text segment and its named /images/item_id
+                                        // the image name is in the text segment and its named /images/unique_id
                                         //console.log("res = ", res);
                                         var image_name_index = res.text.indexOf(imageDirName);
                                         var image_name_index = image_name_index + imageDirName.length;
