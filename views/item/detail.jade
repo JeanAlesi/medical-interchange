@@ -39,6 +39,8 @@ block content
             td= display(item.condition)
           tr
             td Location
+              a(href="/locations/", target="_blank", title="Info")
+                i.glyphicon.glyphicon-info-sign
             td#location= display(item.location)
 
   #map(style='width: 300px; height: 223px; background: grey; float:right')
