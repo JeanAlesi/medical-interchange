@@ -86,6 +86,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 chai.request(server)
                     .get('/items')
@@ -139,6 +140,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get item ID.
                 chai.request(server)
@@ -171,6 +173,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -203,6 +206,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -241,6 +245,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -274,6 +279,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -316,6 +322,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -347,6 +354,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -399,6 +407,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // Get the item ID.
                 chai.request(server)
@@ -470,6 +479,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Invalid')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 expect(res.statusCode).to.equal(200); //200 means it failed as expected (it reloads the page)
                 done();
@@ -490,6 +500,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','bob')
+            .field('location', 'la')
             .end(function(err, res){
                 // search for the item
                 chai.request(server)

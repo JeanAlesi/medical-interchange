@@ -38,7 +38,7 @@ describe("Item model", function(done) {
 
     it("Add empty category", function(done) {
         var item = new Item({title:"boo",description:"blah",
-                             condition:"Used - Great", user:"Atlanta"});
+                             condition:"Used - Great", user:"Atlanta", location:"la"});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does exist
             expect(err).to.exist;
@@ -135,7 +135,7 @@ describe("Item model", function(done) {
 
     it("Accepts a correct enum value for condition", function(done) {
         var item = new Item({title:"boo",description:"blah",category:"Machinery",
-                             condition:Item.ItemConditions[0], user:"Atlanta"});
+                             condition:Item.ItemConditions[0], user:"Atlanta", location:'la'});
         Item.create(item, function (err, createdItem) {
             // Confirm that an error does not exist
             assert.isNull(err);
