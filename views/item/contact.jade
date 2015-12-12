@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  h2.display-data Donor Information
+
+    table.table.table-bordered
+      tr
+        td Username
+        td= display(itemuser.username)
+      tr
+        td First Name
+        td= display(itemuser.firstname)
+      tr
+        td Last Name
+        td= display(itemuser.lastname)
+      tr
+        td Email
+        td= display(itemuser.email)
+      tr
+        td Phone
+        td= display(itemuser.phonenumber)
+
+
+  .form-actions
+    a.btn.btn-warning(href="/items") Back

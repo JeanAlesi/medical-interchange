@@ -1,4 +1,5 @@
 var Item = require('../models/item'),
+    Account = require('../models/account.js'),
     fs = require("fs"),
     mapper = require('../lib/model-mapper'),
     path = require('path'),
@@ -78,6 +79,20 @@ module.exports = function(app) {
                 res.redirect('/items/' + item._id + '/uploadimage');
             }
         });
+    });
+
+    // ============================================================================
+    // GET /contact
+    app.get('/items/:itemId/contact', function(req, res) {
+        var itemQ = Item.findOne({'_id':req.params.itemId})
+        itemQ.exec(function (err, item) {
+          if (err) res.render('item/index', { items : items });
+          var userQ = Account.findOne({ 'username': item.user });
+          userQ.exec(function (err, itemuser) {
+            if (err) res.render('item/index', { items : items });
+            res.render('item/contact', { itemuser : itemuser });
+          })
+        })
     });
 
     // ============================================================================
