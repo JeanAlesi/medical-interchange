@@ -1,7 +1,7 @@
 //
 // Test routes.
 //
-
+var Item = require('../models/item');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -506,4 +506,45 @@ describe('Routes', function(done) {
                     });
             });
     });
+
+    // Item contact GET
+    it('Test items contact GET', function(done){
+        var unique_name = 'TEST_ITEM_CONTACT_GET';
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used - Good')
+            .field('user','NA')
+            .end(function(err, res){
+
+              chai.request(server)
+                  .post('/register')
+                  .redirects(0)
+                  .field('username','NA')
+                  .field('password','donut')
+                  .field('firstname','robert')
+                  .field('lastname','slobson')
+                  .field('email','bob@slob.com')
+                  .field('phonenumber','555-333-2222')
+                  .end(function(err, res){
+
+                    var itemQ = Item.findOne({'title':unique_name})
+                    itemQ.exec(function (err, item) {
+                      //hit contact page with id
+                      chai.request(server)
+                          .get('/items/'.concat(item._id,'/contact'))
+                          .set('test', 'true')
+                          .end(function (err, res) {
+                              res.should.have.status(200);
+                              done();
+                          });
+                    });
+                  });
+            });
+        });
+
 });

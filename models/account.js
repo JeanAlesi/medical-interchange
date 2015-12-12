@@ -6,7 +6,11 @@ var Roles = ["Donor", "Recipient", "Admin"];
 var Account = new Schema({
     username: String,
     password: String,
-    role: String
+    role: String,
+    firstname: String,
+    lastname: String,
+    email: String,
+    phonenumber: String
 });
 
 Account.plugin(passportLocalMongoose);
