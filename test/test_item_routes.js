@@ -507,7 +507,7 @@ describe('Routes', function(done) {
             });
     });
 
-    // Item edit GET
+    // Item contact GET
     it('Test items contact GET', function(done){
         var unique_name = 'TEST_ITEM_CONTACT_GET';
         // Create an item to get a response.

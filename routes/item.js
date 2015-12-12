@@ -86,10 +86,10 @@ module.exports = function(app) {
     app.get('/items/:itemId/contact', function(req, res) {
         var itemQ = Item.findOne({'_id':req.params.itemId})
         itemQ.exec(function (err, item) {
-          if (err) return handleError(err);
+          if (err) res.render('item/index', { items : items });
           var userQ = Account.findOne({ 'username': item.user });
           userQ.exec(function (err, itemuser) {
-            if (err) return handleError(err);
+            if (err) res.render('item/index', { items : items });
             res.render('item/contact', { itemuser : itemuser });
           })
         })
