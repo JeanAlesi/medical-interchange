@@ -295,6 +295,7 @@ describe('Routes', function(done) {
                             .field('category','Hospital Equipment')
                             .field('condition','Used - Good')
                             .field('user','bob')
+                            .field('location', 'la')
                             .end(function(err, res) {
                                 // Verify changes.
                                 chai.request(server)
