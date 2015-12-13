@@ -21,6 +21,8 @@ block content
         mixin errorMessage(item, 'category')
       .form-group
         mixin label("location", "Location")
+        a(href="/locations/", target="_blank", title="Info")
+          i.glyphicon.glyphicon-info-sign
         mixin text("location", item.location)
         mixin errorMessage(item, 'location')
       .form-group
