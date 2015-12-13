@@ -1,7 +1,7 @@
 //
 // Test routes.
 //
-
+var Item = require('../models/item');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
@@ -362,7 +362,7 @@ describe('Routes', function(done) {
                     .end(function (err, res) {
                         item_id = getItemIDFromResponse(res);
                         // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
+                        var image_name = __dirname + '/../public/img/P1000788.jpg';
                         chai.request(server)
                             .post('/items/'.concat(item_id,'/uploadimage'))
                             .redirects(0)
@@ -415,7 +415,7 @@ describe('Routes', function(done) {
                     .end(function (err, res) {
                         item_id = getItemIDFromResponse(res);
                         // upload the image
-                        var image_name = __dirname + '/../public/images/P1000788.jpg';
+                        var image_name = __dirname + '/../public/img/P1000788.jpg';
                         chai.request(server)
                             .post('/items/'.concat(item_id,'/uploadimage'))
                             .redirects(0)
@@ -425,7 +425,7 @@ describe('Routes', function(done) {
                                 chai.request(server)
                                     .get('/items')
                                     .end(function (err, res) {
-                                        // the image name is in the text segment and its named /images/item_id
+                                        // the image name is in the text segment and its named /images/unique_id
                                         //console.log("res = ", res);
                                         var image_name_index = res.text.indexOf(imageDirName);
                                         var image_name_index = image_name_index + imageDirName.length;
@@ -517,4 +517,45 @@ describe('Routes', function(done) {
                     });
             });
     });
+
+    // Item contact GET
+    it('Test items contact GET', function(done){
+        var unique_name = 'TEST_ITEM_CONTACT_GET';
+        // Create an item to get a response.
+        chai.request(server)
+            .post('/items/create')
+            .redirects(0)
+            .field('title',unique_name)
+            .field('description','2005 Model Year')
+            .field('category','Hospital Equipment')
+            .field('condition','Used - Good')
+            .field('user','NA')
+            .end(function(err, res){
+
+              chai.request(server)
+                  .post('/register')
+                  .redirects(0)
+                  .field('username','NA')
+                  .field('password','donut')
+                  .field('firstname','robert')
+                  .field('lastname','slobson')
+                  .field('email','bob@slob.com')
+                  .field('phonenumber','555-333-2222')
+                  .end(function(err, res){
+
+                    var itemQ = Item.findOne({'title':unique_name})
+                    itemQ.exec(function (err, item) {
+                      //hit contact page with id
+                      chai.request(server)
+                          .get('/items/'.concat(item._id,'/contact'))
+                          .set('test', 'true')
+                          .end(function (err, res) {
+                              res.should.have.status(200);
+                              done();
+                          });
+                    });
+                  });
+            });
+        });
+
 });

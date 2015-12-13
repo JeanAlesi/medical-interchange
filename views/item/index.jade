@@ -21,7 +21,7 @@ block content
       tr
         td
           a(href="/items/" + item._id + "/detail", title="Detail")
-            img(src='/images/' + item.imageFileNames[0] width="100" height="auto" onerror="this.onerror=null;this.src='/images/slug.png';this.width=50;this.height=50;")
+            img(src='/images/' + item.imageFileNames[0] width="100" height="auto" onerror="this.onerror=null;this.src='/img/slug.png';this.width=50;this.height=50;")
         td= display(item.title)
         td= display(item.description)
         td= display(item.category)
@@ -38,3 +38,6 @@ block content
           |
           a(href="/items/" + item._id + "/delete", title="Delete")
             i.glyphicon.glyphicon-ban-circle
+          |
+          a(href="/items/" + item._id + "/contact", title="Contact")
+            i.glyphicon.glyphicon-user
