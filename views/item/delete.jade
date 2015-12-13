@@ -21,6 +21,9 @@ block content
             a(href="/conditions/", target="_blank", title="Conditions")
               i.glyphicon.glyphicon-info-sign
           td= display(item.condition)
+        tr
+          td Location
+          td= display(item.location)
 
 
   form#item-form.form-horizontal(action="/items/" + item._id + "/delete", method="POST")

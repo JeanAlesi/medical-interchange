@@ -4,9 +4,3 @@ module.exports = function(app) {
         res.render('conditions/index');
     });
 };
-
-//Used to build the index page. Can be safely removed!
-module.exports.meta = {
- name : 'Conditions',
- route : '/conditions'
-};
