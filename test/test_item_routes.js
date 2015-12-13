@@ -530,6 +530,7 @@ describe('Routes', function(done) {
             .field('category','Hospital Equipment')
             .field('condition','Used - Good')
             .field('user','NA')
+            .field('location', 'la')
             .end(function(err, res){
 
               chai.request(server)
