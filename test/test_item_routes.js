@@ -107,12 +107,14 @@ describe('Routes', function(done) {
         var missing_title_err = "Title is required"
         var missing_description_err = "Description is required";
         var missing_category_err = "Category is required";
+        var missing_location_err = "Location is required";
         chai.request(server)
             .post('/items/create')
             .redirects(0)
-        // Missing title.
-        // Missing description.
-        // Missing category.
+            // Missing title.
+            // Missing description.
+            // Missing category.
+            // Missing location.
             .end(function(err, res){
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
@@ -122,6 +124,8 @@ describe('Routes', function(done) {
                 expect(description_index).to.not.equal(-1);
                 var category_index = res.text.indexOf(missing_category_err);
                 expect(category_index).to.not.equal(-1);
+                var location_index = res.text.indexOf(missing_location_err);
+                expect(location_index).to.not.equal(-1);
                 done();
             });
     });
@@ -559,5 +563,5 @@ describe('Routes', function(done) {
                   });
             });
         });
-    
+
 });
