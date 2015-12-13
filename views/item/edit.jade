@@ -27,6 +27,10 @@ block content
           for conditionOption in itemConditions
             option(value=conditionOption, selected=item.condition == conditionOption) #{conditionOption}
         mixin errorMessage(item, 'condition')
+      .form-group
+        mixin label("location", "Location")
+        mixin text("location", item.location)
+        mixin errorMessage(item, 'location')
 
     .form-actions
       a.btn.btn-warning(href="/items") Back

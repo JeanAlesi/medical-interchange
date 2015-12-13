@@ -39,9 +39,61 @@ block content
                 i.glyphicon.glyphicon-info-sign
             td= display(item.condition)
 
-  .form-actions
+  .form-actions(style="margin-top: 5%; clear: left")
     a.btn.btn-warning(href="/items") Back
     |
     a.btn.btn-primary(href="/items/" + item._id + "/edit") Edit
     |
     a.btn.btn-danger(href="/items/" + item._id + "/delete") Delete
+
+  script(type='text/javascript', charset='UTF-8', src='https://js.api.here.com/v3/3.0/mapsjs-core.js')
+  script(type='text/javascript', charset='UTF-8', src='https://js.api.here.com/v3/3.0/mapsjs-service.js')
+  script(type='text/javascript', charset='UTF-8', src='https://js.api.here.com/v3/3.0/mapsjs-ui.js')
+  script(type='text/javascript', charset='UTF-8', src='https://js.api.here.com/v3/3.0/mapsjs-mapevents.js')
+  script.
+    var platform = new H.service.Platform({
+      app_id: 'wzcMVMwCfq1fHF8tU3LK',
+      app_code: '0bbAcg5g0-RO5ZLE8gh95w',
+      useCIT: true,
+      useHTTPS: true
+    });
+    var defaultLayers = platform.createDefaultLayers();
+    var map = new H.Map(document.getElementById('map'),
+            defaultLayers.normal.map, {
+              center: {lat: 50, lng: 5},
+              zoom: 4
+            });
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+    // wanted to do <?php echo $item.location; ?>
+    var locationString = $('#location').text();   // hack... but, how do you print server side variables into the document with nodejs ????
+    markItemLocationXHR(locationString);
+
+
+    /**
+     * This will get the lat lng coordinates for a given address
+     * @param {String} location    -Location to geocode
+     */
+    function markItemLocationXHR(address) {
+      console.log('here');
+      if (!!address) {
+        $.ajax({
+          url: 'https://geocoder.api.here.com/6.2/geocode.json',
+          type: 'GET',
+          dataType: 'jsonp',
+          jsonp: 'jsoncallback',
+          data: {
+            searchtext: address,
+            gen: '8',
+            app_id: 'wzcMVMwCfq1fHF8tU3LK',
+            app_code: '0bbAcg5g0-RO5ZLE8gh95w',
+          },
+          success: function (data) {
+            var position = new H.geo.Point(data.Response.View[0].Result[0].Location.DisplayPosition.Latitude, data.Response.View[0].Result[0].Location.DisplayPosition.Longitude);
+            map.setCenter(position);
+            map.addObject(new H.map.Marker(position));
+          }
+        });
+      }
+    }
